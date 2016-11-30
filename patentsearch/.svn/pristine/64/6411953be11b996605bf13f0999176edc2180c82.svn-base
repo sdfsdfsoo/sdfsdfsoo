@@ -1,0 +1,102 @@
+.box1{
+border: 1px solid #CCD;
+border-radius: 5px;
+margin: 0px 4px 0px 4px;
+position: relative;
+padding: 10px;
+height: auto;
+overflow: hidden;
+background-color: #FFF;
+width: 970px;
+}
+.box2{
+border: 1px solid #CCD;
+border-radius: 5px;
+margin: 10px 4px 5px;
+padding: 10px;
+width: 940px;
+height: auto;
+text-align: center;
+background-color: #CEF3FF;
+float: left;
+}
+
+dl dt {
+clear: none;
+float: left;
+width: 150px;
+height: 24px;
+font-size: 15px;
+line-height: 20px;
+margin: 0px;
+padding: 5px;
+color: #6E6E6E;
+text-align: right;
+}
+
+dl dd {
+clear: none;
+float: left;
+width: 300px;
+height: 25px;
+font-size: 14px;
+line-height: 20px;
+margin: 0px;
+padding: 5px;
+text-align: center;	
+}
+.box1Top{
+width: 325px;
+height: 30px;
+float: left;
+margin: 0px 0px 0px 10px;
+}
+dd input{
+	border: 1px solid #6E6E6E;
+background-color: #F0F0F2;
+vertical-align: text-bottom;
+float: left;
+width: 260px;
+height: 25px;
+font-size: 16px;
+margin: 0px;
+}
+.box2Buttons{
+	float: right;
+font-size: 15px;
+color: #08578D;
+font-weight: bold;
+padding: 7px 45px 0px 0px;
+text-align: center;
+
+}
+.home2_input{
+		width: 840px;
+height: 80px;
+float: left;
+margin-top: 5px;
+resize: none;
+border: 1px solid #6E6E6E;
+}
+table tr td{
+	vertical-align: top;
+}
+.home2_d1 {
+width: 421px;
+height: 35px;
+float: left;
+}
+
+.home2_d1 li {
+    width: 60px;
+    height: 34px;
+    float: left;
+}
+.cmdTitle{
+	float: left
+}
+.ui-datepicker 
+select.ui-datepicker-month, .ui-datepicker 
+select.ui-datepicker-year {
+    width: 30%;
+}

@@ -1,0 +1,2231 @@
+package patentsearch.web.action.control;
+
+import java.io.File;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.annotation.Resource;
+
+import net.sf.json.JSONObject;
+
+import org.apache.struts2.ServletActionContext;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
+
+import patentsearch.bean.base.PageView;
+import patentsearch.bean.base.QueryResult;
+import patentsearch.bean.declarematerial.DeclareMaterial;
+import patentsearch.bean.master.Master;
+import patentsearch.bean.privilege.PrivilegeGroup;
+import patentsearch.bean.privilege.SystemPrivilege;
+import patentsearch.bean.tabletype.AuditRecord;
+import patentsearch.bean.tabletype.PatentCountInfo;
+import patentsearch.bean.tabletype.PatentInfo;
+import patentsearch.bean.tabletype.TableType;
+import patentsearch.bean.user.User;
+import patentsearch.service.declarematerial.DeclareMaterialService;
+import patentsearch.service.patent.AuditRecordService;
+import patentsearch.service.patent.TableTypeService;
+import patentsearch.service.user.UserService;
+import patentsearch.utils.base.ConfigTool;
+import patentsearch.utils.base.ExcelTool;
+import patentsearch.utils.base.FileTool;
+import patentsearch.utils.base.WebTool;
+import patentsearch.utils.base.WordTool;
+import patentsearch.web.action.base.BaseAction;
+
+import com.opensymphony.xwork2.ActionContext;
+
+/**
+ * 后台专利信息
+ */
+@Controller
+@Scope("prototype")
+public class PatentAction extends BaseAction {
+	@Resource
+	TableTypeService tableTypeService;
+	@Resource
+	AuditRecordService auditRecordService;
+	@Resource
+	DeclareMaterialService declareMaterialService;
+	@Resource
+	UserService userService;
+	// 获取所有专利类型
+	Map<String, String> patentTypes = ConfigTool.getPatentType();
+	/* 专利信息 */
+	private PatentInfo patent;
+	private PatentInfo patentCondition;
+	private TableType tableType;
+	private Integer declareMaterialId;
+	/* 审核不通过时的意见 */
+	private String suggest;
+	/* 单位名称，用于接收统计查询条件 */
+	private String unitName;
+	/* 地区，用于接收统计查询条件 */
+	private String region;
+	/* 起始日期，用于接收统计查询条件 */
+	private Date startDate;
+	/* 终止日期，用于接收统计查询条件 */
+	private Date endDate;
+	/* 大户级别，用于接收统计查询条件 */
+	private String bigFamilyGrade;
+	/* 修改状态时的标志，看是否是以get方式传递参数的，flag为1表示以get方式传递参数 */
+	private Integer flag;
+	// 资助文件路径
+	private String aidpolicyfilepath;
+	/* 代理机构 */
+	private String agency;
+	private AuditRecord auditRecord;
+	/* 当前页 */
+	private Integer page = 1;
+	private Integer patentTypePrice1;
+	private Integer patentTypePrice2;
+	private Integer patentTypePrice3;
+	private Integer patentTypePrice4;
+	private Integer patentTypePrice5;
+	private Integer patentTypePrice6;
+	private Integer patentTypePrice7;
+	private Integer patentTypePrice8;
+	private Integer patentTypePrice9;
+	// 大户参数
+	private Integer patentTypePara1;
+	private Integer patentTypePara2;
+	private Integer patentTypePara3;
+	private Integer patentTypePara4;
+	private Integer patentTypePara5;
+	private Integer patentTypePara6;
+	private Integer patentTypePara7;
+	private Integer patentTypePara8;
+	private Integer patentTypePara9;
+	private Integer totalScore1 = 0;
+	private Integer totalMoney1 = 0;
+	private Integer totalScore2 = 0;
+	private Integer totalMoney2 = 0;
+	private Integer totalScore3 = 0;
+	private Integer totalMoney3 = 0;
+	private Integer totalScore4 = 0;
+	private Integer totalMoney4 = 0;
+	private Integer totalScore5 = 0;
+	private Integer totalMoney5 = 0;
+	private String auditGradeLastState;
+	private String ids;
+	// 接收专利质量查询条件
+	private String patentQuality;
+	// 镇江市资助金额设置
+	private Integer patentType1_h_sch = 0;
+	private Integer patentType1_h_co = 0;
+	private Integer patentType1_c_sch = 0;
+	private Integer patentType1_c_co = 0;
+	private Integer patentType2_h_sch = 0;
+	private Integer patentType2_h_co = 0;
+	private Integer patentType2_c_sch = 0;
+	private Integer patentType2_c_co = 0;
+	private Integer patentType4_h = 0;
+	private Integer patentType4_c = 0;
+
+	public String getAgency() {
+		return agency;
+	}
+
+	public void setAgency(String agency) {
+		this.agency = agency;
+	}
+
+	public Integer getFlag() {
+		return flag;
+	}
+
+	public void setFlag(Integer flag) {
+		this.flag = flag;
+	}
+
+	public String getSuggest() {
+		return suggest;
+	}
+
+	public void setSuggest(String suggest) {
+		this.suggest = suggest;
+	}
+
+	public String getAidpolicyfilepath() {
+		return aidpolicyfilepath;
+	}
+
+	public void setAidpolicyfilepath(String aidpolicyfilepath) {
+		this.aidpolicyfilepath = aidpolicyfilepath;
+	}
+
+	public String getUnitName() {
+		return unitName;
+	}
+
+	public void setUnitName(String unitName) {
+		this.unitName = unitName;
+	}
+
+	public String getRegion() {
+		return region;
+	}
+
+	public void setRegion(String region) {
+		this.region = region;
+	}
+
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+
+	public TableTypeService getTableTypeService() {
+		return tableTypeService;
+	}
+
+	public void setTableTypeService(TableTypeService tableTypeService) {
+		this.tableTypeService = tableTypeService;
+	}
+
+	public Integer getPatentTypePrice1() {
+		return patentTypePrice1;
+	}
+
+	public void setPatentTypePrice1(Integer patentTypePrice1) {
+		this.patentTypePrice1 = patentTypePrice1;
+	}
+
+	public Integer getPatentTypePrice2() {
+		return patentTypePrice2;
+	}
+
+	public void setPatentTypePrice2(Integer patentTypePrice2) {
+		this.patentTypePrice2 = patentTypePrice2;
+	}
+
+	public Integer getPatentTypePrice3() {
+		return patentTypePrice3;
+	}
+
+	public void setPatentTypePrice3(Integer patentTypePrice3) {
+		this.patentTypePrice3 = patentTypePrice3;
+	}
+
+	public Integer getPatentTypePrice4() {
+		return patentTypePrice4;
+	}
+
+	public void setPatentTypePrice4(Integer patentTypePrice4) {
+		this.patentTypePrice4 = patentTypePrice4;
+	}
+
+	public Integer getPatentTypePrice5() {
+		return patentTypePrice5;
+	}
+
+	public void setPatentTypePrice5(Integer patentTypePrice5) {
+		this.patentTypePrice5 = patentTypePrice5;
+	}
+
+	public Integer getPatentTypePrice6() {
+		return patentTypePrice6;
+	}
+
+	public void setPatentTypePrice6(Integer patentTypePrice6) {
+		this.patentTypePrice6 = patentTypePrice6;
+	}
+
+	public Integer getPatentTypePrice7() {
+		return patentTypePrice7;
+	}
+
+	public void setPatentTypePrice7(Integer patentTypePrice7) {
+		this.patentTypePrice7 = patentTypePrice7;
+	}
+
+	public Integer getPatentTypePrice8() {
+		return patentTypePrice8;
+	}
+
+	public void setPatentTypePrice8(Integer patentTypePrice8) {
+		this.patentTypePrice8 = patentTypePrice8;
+	}
+
+	public Integer getPatentTypePrice9() {
+		return patentTypePrice9;
+	}
+
+	public void setPatentTypePrice9(Integer patentTypePrice9) {
+		this.patentTypePrice9 = patentTypePrice9;
+	}
+
+	public AuditRecord getAuditRecord() {
+		return auditRecord;
+	}
+
+	public void setAuditRecord(AuditRecord auditRecord) {
+		this.auditRecord = auditRecord;
+	}
+
+	public Integer getPage() {
+		return page;
+	}
+
+	public void setPage(Integer page) {
+		this.page = page;
+	}
+
+	public Integer getDeclareMaterialId() {
+		return declareMaterialId;
+	}
+
+	public void setDeclareMaterialId(Integer declareMaterialId) {
+		this.declareMaterialId = declareMaterialId;
+	}
+
+	public TableType getTableType() {
+		return tableType;
+	}
+
+	public void setTableType(TableType tableType) {
+		this.tableType = tableType;
+	}
+
+	public PatentInfo getPatent() {
+		return patent;
+	}
+
+	public void setPatent(PatentInfo patent) {
+		this.patent = patent;
+	}
+
+	public PatentInfo getPatentCondition() {
+		return patentCondition;
+	}
+
+	public void setPatentCondition(PatentInfo patentCondition) {
+		this.patentCondition = patentCondition;
+	}
+
+	public Integer getPatentTypePara1() {
+		return patentTypePara1;
+	}
+
+	public void setPatentTypePara1(Integer patentTypePara1) {
+		this.patentTypePara1 = patentTypePara1;
+	}
+
+	public Integer getPatentTypePara2() {
+		return patentTypePara2;
+	}
+
+	public void setPatentTypePara2(Integer patentTypePara2) {
+		this.patentTypePara2 = patentTypePara2;
+	}
+
+	public Integer getPatentTypePara3() {
+		return patentTypePara3;
+	}
+
+	public void setPatentTypePara3(Integer patentTypePara3) {
+		this.patentTypePara3 = patentTypePara3;
+	}
+
+	public Integer getPatentTypePara4() {
+		return patentTypePara4;
+	}
+
+	public void setPatentTypePara4(Integer patentTypePara4) {
+		this.patentTypePara4 = patentTypePara4;
+	}
+
+	public Integer getPatentTypePara5() {
+		return patentTypePara5;
+	}
+
+	public void setPatentTypePara5(Integer patentTypePara5) {
+		this.patentTypePara5 = patentTypePara5;
+	}
+
+	public Integer getPatentTypePara6() {
+		return patentTypePara6;
+	}
+
+	public void setPatentTypePara6(Integer patentTypePara6) {
+		this.patentTypePara6 = patentTypePara6;
+	}
+
+	public Integer getPatentTypePara7() {
+		return patentTypePara7;
+	}
+
+	public void setPatentTypePara7(Integer patentTypePara7) {
+		this.patentTypePara7 = patentTypePara7;
+	}
+
+	public Integer getPatentTypePara8() {
+		return patentTypePara8;
+	}
+
+	public void setPatentTypePara8(Integer patentTypePara8) {
+		this.patentTypePara8 = patentTypePara8;
+	}
+
+	public Integer getPatentTypePara9() {
+		return patentTypePara9;
+	}
+
+	public void setPatentTypePara9(Integer patentTypePara9) {
+		this.patentTypePara9 = patentTypePara9;
+	}
+
+	public Integer getTotalScore1() {
+		return totalScore1;
+	}
+
+	public void setTotalScore1(Integer totalScore1) {
+		this.totalScore1 = totalScore1;
+	}
+
+	public Integer getTotalMoney1() {
+		return totalMoney1;
+	}
+
+	public void setTotalMoney1(Integer totalMoney1) {
+		this.totalMoney1 = totalMoney1;
+	}
+
+	public Integer getTotalScore2() {
+		return totalScore2;
+	}
+
+	public void setTotalScore2(Integer totalScore2) {
+		this.totalScore2 = totalScore2;
+	}
+
+	public Integer getTotalMoney2() {
+		return totalMoney2;
+	}
+
+	public void setTotalMoney2(Integer totalMoney2) {
+		this.totalMoney2 = totalMoney2;
+	}
+
+	public Integer getTotalScore3() {
+		return totalScore3;
+	}
+
+	public void setTotalScore3(Integer totalScore3) {
+		this.totalScore3 = totalScore3;
+	}
+
+	public Integer getTotalMoney3() {
+		return totalMoney3;
+	}
+
+	public void setTotalMoney3(Integer totalMoney3) {
+		this.totalMoney3 = totalMoney3;
+	}
+
+	public Integer getTotalScore4() {
+		return totalScore4;
+	}
+
+	public void setTotalScore4(Integer totalScore4) {
+		this.totalScore4 = totalScore4;
+	}
+
+	public Integer getTotalMoney4() {
+		return totalMoney4;
+	}
+
+	public void setTotalMoney4(Integer totalMoney4) {
+		this.totalMoney4 = totalMoney4;
+	}
+
+	public Integer getTotalScore5() {
+		return totalScore5;
+	}
+
+	public void setTotalScore5(Integer totalScore5) {
+		this.totalScore5 = totalScore5;
+	}
+
+	public Integer getTotalMoney5() {
+		return totalMoney5;
+	}
+
+	public void setTotalMoney5(Integer totalMoney5) {
+		this.totalMoney5 = totalMoney5;
+	}
+
+	public String getAuditGradeLastState() {
+		return auditGradeLastState;
+	}
+
+	public void setAuditGradeLastState(String auditGradeLastState) {
+		this.auditGradeLastState = auditGradeLastState;
+	}
+
+	public String getBigFamilyGrade() {
+		return bigFamilyGrade;
+	}
+
+	public void setBigFamilyGrade(String bigFamilyGrade) {
+		this.bigFamilyGrade = bigFamilyGrade;
+	}
+
+	public String getIds() {
+		return ids;
+	}
+
+	public void setIds(String ids) {
+		this.ids = ids;
+	}
+
+	public String getPatentQuality() {
+		return patentQuality;
+	}
+
+	public void setPatentQuality(String patentQuality) {
+		this.patentQuality = patentQuality;
+	}
+
+	public Integer getPatentType1_h_sch() {
+		return patentType1_h_sch;
+	}
+
+	public void setPatentType1_h_sch(Integer patentType1HSch) {
+		patentType1_h_sch = patentType1HSch;
+	}
+
+	public Integer getPatentType1_h_co() {
+		return patentType1_h_co;
+	}
+
+	public void setPatentType1_h_co(Integer patentType1HCo) {
+		patentType1_h_co = patentType1HCo;
+	}
+
+	public Integer getPatentType1_c_sch() {
+		return patentType1_c_sch;
+	}
+
+	public void setPatentType1_c_sch(Integer patentType1CSch) {
+		patentType1_c_sch = patentType1CSch;
+	}
+
+	public Integer getPatentType1_c_co() {
+		return patentType1_c_co;
+	}
+
+	public void setPatentType1_c_co(Integer patentType1CCo) {
+		patentType1_c_co = patentType1CCo;
+	}
+
+	public Integer getPatentType2_h_sch() {
+		return patentType2_h_sch;
+	}
+
+	public void setPatentType2_h_sch(Integer patentType2HSch) {
+		patentType2_h_sch = patentType2HSch;
+	}
+
+	public Integer getPatentType2_h_co() {
+		return patentType2_h_co;
+	}
+
+	public void setPatentType2_h_co(Integer patentType2HCo) {
+		patentType2_h_co = patentType2HCo;
+	}
+
+	public Integer getPatentType2_c_sch() {
+		return patentType2_c_sch;
+	}
+
+	public void setPatentType2_c_sch(Integer patentType2CSch) {
+		patentType2_c_sch = patentType2CSch;
+	}
+
+	public Integer getPatentType2_c_co() {
+		return patentType2_c_co;
+	}
+
+	public void setPatentType2_c_co(Integer patentType2CCo) {
+		patentType2_c_co = patentType2CCo;
+	}
+
+	public Integer getPatentType4_h() {
+		return patentType4_h;
+	}
+
+	public void setPatentType4_h(Integer patentType4H) {
+		patentType4_h = patentType4H;
+	}
+
+	public Integer getPatentType4_c() {
+		return patentType4_c;
+	}
+
+	public void setPatentType4_c(Integer patentType4C) {
+		patentType4_c = patentType4C;
+	}
+
+	/**
+	 * 申请资助专利详细信息 规定时间内未审核的数据则由系统自动判定为通过审核 得判断是否为三级财政审核员
+	 * 
+	 * @return
+	 */
+
+	public String list() {
+		//初始化所有资助金额
+		//tableTypeService.initDeclarationPatronageSum();
+		Boolean caiZhengAuditLate = false;
+		PageView<PatentInfo> pageView = new PageView<PatentInfo>(20, page);
+		int firstindex = (pageView.getCurrentpage() - 1)
+				* pageView.getMaxresult();
+		/* 获取专利类型 */
+		Map<String, String> patentTypes = ConfigTool.getPatentType();
+		String promtInfo = "";
+		startDate = ConfigTool.getAuditStartDate();
+		endDate = ConfigTool.getAuditEndDate();
+		 //tableTypeService.setPatentState(dateFormat(dateFormat(startDate)),dateFormat(dateFormat(endDate)));
+		caiZhengAuditLate = tableTypeService.isLateCaiZhengAudit(
+				ServletActionContext.getRequest(),
+				dateFormat(dateFormat(startDate)),
+				dateFormat(dateFormat(endDate)));
+
+		promtInfo = "您的审核日期从" + dateFormat(startDate) + "到"
+				+ dateFormat(endDate)
+				+ "，请在规定日期内完成审核操作！否则，由职能部门审核通过的专利项目将会自动变成财政部门审核通过！";
+		ActionContext.getContext().put("patentTypes", patentTypes);
+		StringBuilder whereStr = new StringBuilder("");
+		List<Object> param = new LinkedList<Object>();
+		getPatentInfoWhereStr(whereStr, param);
+		QueryResult<PatentInfo> qr = tableTypeService.getPatents(firstindex,
+				pageView.getMaxresult(), whereStr.toString(), param.toArray());
+		pageView.setRecords(qr.getResultlist());
+		pageView.setTotalrecords((int) qr.getTotalrecord());
+		/* 获得所有状态 ,注意专利草稿状态不显示，应在界面上删除 */
+		Map<String, String> stateMap = ConfigTool.getStates();
+		stateMap.remove(1 + "");
+		// 获取所有地区
+		String[] areas = ConfigTool.getAreas();
+		ActionContext.getContext().put("areas", areas);
+		ActionContext.getContext().put("stateMap", stateMap);
+		ActionContext.getContext().put("pageView", pageView);
+		ActionContext.getContext().put("promtInfo", promtInfo);
+		ActionContext.getContext().put("caiZhengAuditLate", caiZhengAuditLate);
+
+		return "list";
+	}
+
+	/**
+	 * 导出所有申请单位申请、授权信息
+	 */
+	public String exportToWord() {
+		Master master = WebTool.getLoginedMaster(ServletActionContext
+				.getRequest());
+		if (master == null) {
+			ActionContext.getContext().put("message",
+					"您好，镇(街道、园区)审核员，您还没有登录，请先登录！");
+			ActionContext.getContext().put("urladdress", "/master/login");
+			return "message";
+		}
+		StringBuilder whereStr = new StringBuilder("");
+		List<Object> params = new LinkedList<Object>();
+		addWhereSql(whereStr, params);
+		QueryResult<PatentCountInfo> qr = tableTypeService
+				.getPatentCountInfosByUnit(-1, -1, null,  whereStr.toString(),
+						params.toArray());
+
+		if (qr != null && qr.getResultlist() != null
+				&& qr.getResultlist().size() > 0) {
+			WordTool wordTool = new WordTool();
+			String templatePath = "/upload/template/regiontemplate.doc";// word文件的模板路径
+			String realPath = ServletActionContext.getServletContext()
+					.getRealPath(templatePath);
+			wordTool.openDocument(realPath);
+			int row = 3;
+			BigInteger colSum1 = BigInteger.ZERO;
+			BigDecimal colSum2 = BigDecimal.ZERO;
+			BigInteger colSum3 = BigInteger.ZERO;
+			BigDecimal colSum4 = BigDecimal.ZERO;
+			BigInteger colSum5 = BigInteger.ZERO;
+			BigDecimal colSum6 = BigDecimal.ZERO;
+			BigInteger colSum7 = BigInteger.ZERO;
+			BigDecimal colSum8 = BigDecimal.ZERO;
+			BigInteger colSum9 = BigInteger.ZERO;
+			BigDecimal colSum10 = BigDecimal.ZERO;
+			BigInteger colSum11 = BigInteger.ZERO;
+			BigDecimal colSum12 = BigDecimal.ZERO;
+			BigInteger colSum13 = BigInteger.ZERO;
+			BigDecimal colSum14 = BigDecimal.ZERO;
+			BigInteger colSum15 = BigInteger.ZERO;
+			BigDecimal colSum16 = BigDecimal.ZERO;
+			Integer colSum17 = 0;
+			Integer colSum18 = 0;
+			BigDecimal colSum19 = BigDecimal.ZERO;
+			for (PatentCountInfo cp : qr.getResultlist()) {
+
+				colSum1 = colSum1.add(cp.getPatentNum1());
+				colSum2 = colSum2.add(cp.getAidMoney1());
+				colSum3 = colSum3.add(cp.getPatentNum3());
+				colSum4 = colSum4.add(cp.getAidMoney3());
+				colSum5 = colSum5.add(cp.getPatentNum5());
+				colSum6 = colSum6.add(cp.getAidMoney5());
+				colSum7 = colSum7.add(cp.getPatentNum7());
+				colSum8 = colSum8.add(cp.getAidMoney7());
+				colSum9 = colSum9.add(cp.getPatentNum2());
+				colSum10 = colSum10.add(cp.getAidMoney2());
+				colSum11 = colSum11.add(cp.getPatentNum4());
+				colSum12 = colSum12.add(cp.getAidMoney4());
+				colSum13 = colSum13.add(cp.getPatentNum6());
+				colSum14 = colSum14.add(cp.getAidMoney6());
+				colSum15 = colSum15.add(cp.getPatentNum8());
+				colSum16 = colSum16.add(cp.getAidMoney8());
+				colSum17 = colSum17 + cp.getTotalScore();
+				colSum18 = colSum18 + cp.getBigFamilyAward();
+				BigDecimal rowSum = BigDecimal.ZERO;
+
+				wordTool.putTxtToCell(1, row, 1, (row - 2) + "");
+				wordTool.putTxtToCell(1, row, 2, cp.getUnitName() == null ? ""
+						: cp.getUnitName());
+				wordTool.putTxtToCell(1, row, 3,
+						cp.getPatentNum1() == null ? "0" : cp.getPatentNum1()
+								.toString());
+				wordTool.putTxtToCell(1, row, 4,
+						cp.getAidMoney1() == null ? "0" : cp.getAidMoney1()
+								.toString());
+				wordTool.putTxtToCell(1, row, 5,
+						cp.getPatentNum2() == null ? "0" : cp.getPatentNum2()
+								.toString());
+				wordTool.putTxtToCell(1, row, 6,
+						cp.getAidMoney2() == null ? "0" : cp.getAidMoney2()
+								.toString());
+				wordTool.putTxtToCell(1, row, 7,
+						cp.getPatentNum4() == null ? "0" : cp.getPatentNum4()
+								.toString());
+				wordTool.putTxtToCell(1, row, 8,
+						cp.getAidMoney4() == null ? "0" : cp.getAidMoney4()
+								.toString());
+				rowSum = rowSum.add(cp.getAidMoney1());
+				rowSum = rowSum.add(cp.getAidMoney2());
+				rowSum = rowSum.add(cp.getAidMoney3());
+				rowSum = rowSum.add(cp.getAidMoney4());
+				rowSum = rowSum.add(cp.getAidMoney5());
+				rowSum = rowSum.add(cp.getAidMoney6());
+				rowSum = rowSum.add(cp.getAidMoney7());
+				rowSum = rowSum.add(cp.getAidMoney8());
+				BigDecimal temp = new BigDecimal("" + cp.getBigFamilyAward());
+				colSum19 = colSum19.add(rowSum);
+				wordTool.putTxtToCell(1, row, 9, rowSum + "");
+				wordTool.putTxtToCell(1, row, 10, "");
+				wordTool.addRow(1);
+				row = row + 1;
+			}
+			// 填充合计信息
+			wordTool.mergeCell(1, row, 1, row, 2);
+			wordTool.putTxtToCell(1, row, 1, "合计");
+			wordTool.putTxtToCell(1, row, 2, colSum1 + "");
+			wordTool.putTxtToCell(1, row, 3, colSum2 + "");
+			wordTool.putTxtToCell(1, row, 4, colSum9 + "");
+			wordTool.putTxtToCell(1, row, 5, colSum10 + "");
+			wordTool.putTxtToCell(1, row, 6, colSum11 + "");
+			wordTool.putTxtToCell(1, row, 7, colSum12 + "");
+			wordTool.putTxtToCell(1, row, 8, colSum19 + "");
+			wordTool.putTxtToCell(1, row, 9, "");
+
+			// 保存路径
+			String savePath = ServletActionContext.getServletContext()
+					.getRealPath(
+							"/upload/word/" + master.getUsername() + ".doc");
+
+			wordTool.save(savePath);
+			wordTool.close();
+			ActionContext.getContext().put("username", master.getUsername());
+			return "towordfile";
+
+		} else {
+			
+			ActionContext.getContext().put("message", "无任何审核通过记录，无法完成导出操作！");
+			ActionContext.getContext().put("urladdress", "/control/index");
+			return "message";
+
+		}
+
+	}
+
+	/**
+	 * 导出本街道的单位申请、授权信息
+	 */
+	public String exportToRegionWord() {
+		Master master = WebTool.getLoginedMaster(ServletActionContext
+				.getRequest());
+		if (master == null) {
+			ActionContext.getContext().put("message",
+					"您好，镇(街道、园区)审核员，您还没有登录，请先登录！");
+			ActionContext.getContext().put("urladdress", "/master/login");
+			return "message";
+		}
+		StringBuilder whereStr = new StringBuilder("region=?1");
+		List<Object> params = new LinkedList<Object>();
+		params.add(master.getRegion());
+		addWhereSql(whereStr, params);
+		QueryResult<PatentCountInfo> qr = tableTypeService
+				.getPatentCountInfosByUnit(-1, -1, null, whereStr.toString(),
+						params.toArray());
+
+		if (qr != null && qr.getResultlist() != null
+				&& qr.getResultlist().size() > 0) {
+			WordTool wordTool = new WordTool();
+			String templatePath = "/upload/template/regiontemplate.doc";// word文件的模板路径
+			String realPath = ServletActionContext.getServletContext()
+					.getRealPath(templatePath);
+			wordTool.openDocument(realPath);
+			int row = 3;
+			BigInteger colSum1 = BigInteger.ZERO;
+			BigDecimal colSum2 = BigDecimal.ZERO;
+			BigInteger colSum3 = BigInteger.ZERO;
+			BigDecimal colSum4 = BigDecimal.ZERO;
+			BigInteger colSum5 = BigInteger.ZERO;
+			BigDecimal colSum6 = BigDecimal.ZERO;
+			BigInteger colSum7 = BigInteger.ZERO;
+			BigDecimal colSum8 = BigDecimal.ZERO;
+			BigInteger colSum9 = BigInteger.ZERO;
+			BigDecimal colSum10 = BigDecimal.ZERO;
+			BigInteger colSum11 = BigInteger.ZERO;
+			BigDecimal colSum12 = BigDecimal.ZERO;
+			BigInteger colSum13 = BigInteger.ZERO;
+			BigDecimal colSum14 = BigDecimal.ZERO;
+			BigInteger colSum15 = BigInteger.ZERO;
+			BigDecimal colSum16 = BigDecimal.ZERO;
+			Integer colSum17 = 0;
+			Integer colSum18 = 0;
+			BigDecimal colSum19 = BigDecimal.ZERO;
+			for (PatentCountInfo cp : qr.getResultlist()) {
+
+				colSum1 = colSum1.add(cp.getPatentNum1());
+				colSum2 = colSum2.add(cp.getAidMoney1());
+				colSum3 = colSum3.add(cp.getPatentNum3());
+				colSum4 = colSum4.add(cp.getAidMoney3());
+				colSum5 = colSum5.add(cp.getPatentNum5());
+				colSum6 = colSum6.add(cp.getAidMoney5());
+				colSum7 = colSum7.add(cp.getPatentNum7());
+				colSum8 = colSum8.add(cp.getAidMoney7());
+				colSum9 = colSum9.add(cp.getPatentNum2());
+				colSum10 = colSum10.add(cp.getAidMoney2());
+				colSum11 = colSum11.add(cp.getPatentNum4());
+				colSum12 = colSum12.add(cp.getAidMoney4());
+				colSum13 = colSum13.add(cp.getPatentNum6());
+				colSum14 = colSum14.add(cp.getAidMoney6());
+				colSum15 = colSum15.add(cp.getPatentNum8());
+				colSum16 = colSum16.add(cp.getAidMoney8());
+				colSum17 = colSum17 + cp.getTotalScore();
+				colSum18 = colSum18 + cp.getBigFamilyAward();
+				BigDecimal rowSum = BigDecimal.ZERO;
+
+				wordTool.putTxtToCell(1, row, 1, (row - 2) + "");
+				wordTool.putTxtToCell(1, row, 2, cp.getUnitName() == null ? ""
+						: cp.getUnitName());
+				wordTool.putTxtToCell(1, row, 3,
+						cp.getPatentNum1() == null ? "0" : cp.getPatentNum1()
+								.toString());
+				wordTool.putTxtToCell(1, row, 4,
+						cp.getAidMoney1() == null ? "0" : cp.getAidMoney1()
+								.toString());
+				wordTool.putTxtToCell(1, row, 5,
+						cp.getPatentNum2() == null ? "0" : cp.getPatentNum2()
+								.toString());
+				wordTool.putTxtToCell(1, row, 6,
+						cp.getAidMoney2() == null ? "0" : cp.getAidMoney2()
+								.toString());
+				wordTool.putTxtToCell(1, row, 7,
+						cp.getPatentNum4() == null ? "0" : cp.getPatentNum4()
+								.toString());
+				wordTool.putTxtToCell(1, row, 8,
+						cp.getAidMoney4() == null ? "0" : cp.getAidMoney4()
+								.toString());
+				rowSum = rowSum.add(cp.getAidMoney1());
+				rowSum = rowSum.add(cp.getAidMoney2());
+				rowSum = rowSum.add(cp.getAidMoney3());
+				rowSum = rowSum.add(cp.getAidMoney4());
+				rowSum = rowSum.add(cp.getAidMoney5());
+				rowSum = rowSum.add(cp.getAidMoney6());
+				rowSum = rowSum.add(cp.getAidMoney7());
+				rowSum = rowSum.add(cp.getAidMoney8());
+				BigDecimal temp = new BigDecimal("" + cp.getBigFamilyAward());
+				colSum19 = colSum19.add(rowSum);
+				wordTool.putTxtToCell(1, row, 9, rowSum + "");
+				wordTool.putTxtToCell(1, row, 10, "");
+				wordTool.addRow(1);
+				row = row + 1;
+			}
+			// 填充合计信息
+			wordTool.mergeCell(1, row, 1, row, 2);
+			wordTool.putTxtToCell(1, row, 1, "合计");
+			wordTool.putTxtToCell(1, row, 2, colSum1 + "");
+			wordTool.putTxtToCell(1, row, 3, colSum2 + "");
+			wordTool.putTxtToCell(1, row, 4, colSum9 + "");
+			wordTool.putTxtToCell(1, row, 5, colSum10 + "");
+			wordTool.putTxtToCell(1, row, 6, colSum11 + "");
+			wordTool.putTxtToCell(1, row, 7, colSum12 + "");
+			wordTool.putTxtToCell(1, row, 8, colSum19 + "");
+			wordTool.putTxtToCell(1, row, 9, "");
+
+			// 保存路径
+			String savePath = ServletActionContext.getServletContext()
+					.getRealPath(
+							"/upload/word/" + master.getUsername() + ".doc");
+
+			wordTool.save(savePath);
+			wordTool.close();
+			ActionContext.getContext().put("username", master.getUsername());
+			return "towordfile";
+
+		} else {
+			ActionContext.getContext().put("message", "无任何审核通过记录，无法完成导出操作！");
+
+			return "message";
+
+		}
+
+	}
+
+	/**
+	 * 导出专利信息明细到excel表
+	 */
+	public String exportPatentInfoToExcel() {
+		// //处理乱码
+		// try {
+		// patent.setPatentName(new
+		// String(patent.getPatentName().getBytes("iso8859-1"),"UTF-8"));
+		// patent.setDeclareName(new
+		// String(patent.getDeclareName().getBytes("iso8859-1"),"UTF-8"));
+		// patent.setRegion(new
+		// String(patent.getRegion().getBytes("iso8859-1"),"UTF-8"));
+		// } catch (UnsupportedEncodingException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+		StringBuilder whereStr = new StringBuilder("");
+		List<Object> param = new LinkedList<Object>();
+
+		getPatentInfoWhereStr(whereStr, param);
+		QueryResult<PatentInfo> qr = tableTypeService.getPatents(-1, -1,
+				whereStr.toString(), param.toArray());
+
+		String fileSavePath = "/upload/excel";// 生成文件路径
+		String fileSaveName = "patentInfo.xls";// 生成保存文件名
+
+		String title = patent.getDeclareName() + patent.getRegion() + "专利信息明细表";
+		ExcelTool.patentInfoListTOExcel(
+				generateFile(fileSavePath, fileSaveName), qr.getResultlist(),
+				"专利信息明细", 0, title);
+		ActionContext.getContext().put("excelfilename", fileSaveName);
+		return "toexcelfile";
+	}
+
+	private void getPatentInfoWhereStr(StringBuilder whereStr,
+			List<Object> param) {
+		String str = " ";
+		Master master = WebTool.getLoginedMaster(ServletActionContext
+				.getRequest());
+		boolean isStreetAuditor = true;
+
+		for (PrivilegeGroup group : master.getGroups()) {
+			if (!"区/高校知识产权审核角色".equals(group.getName())) {
+				isStreetAuditor = false;
+				break;
+			}
+		}
+		ActionContext.getContext().put("isStreetAuditor", isStreetAuditor);
+		if (isStreetAuditor) {
+			if (param.size() > 0) {
+				str = " and ";
+			}
+			whereStr.append(str + " region=?" + (param.size() + 1));
+			param.add(master.getRegion().trim());
+			str = "";
+		}
+		if (patent != null) {
+			if (patent.getPatentNo() != null
+					&& !"".equals(patent.getPatentNo())) {
+				if (param.size() > 0) {
+					str = " and ";
+				}
+				whereStr.append(str + " patentNo=?" + (param.size() + 1));
+				param.add(patent.getPatentNo().trim());
+				str = "";
+			}
+			if (patent.getStateNO() != null && this.patent.getStateNO() != -1) {
+				if (param.size() > 0) {
+					str = " and ";
+				}
+				whereStr.append(str + " stateNO=?" + (param.size() + 1));
+				param.add(patent.getStateNO());
+				str = "";
+				ActionContext.getContext().put("stateNO", patent.getStateNO());
+			}
+			if (patent.getPatentType() != null && patent.getPatentType() > 0) {
+				ActionContext.getContext().put("patentType",
+						patent.getPatentType());
+				if (param.size() > 0) {
+					str = " and ";
+				}
+				whereStr.append(str + " patentType=?" + (param.size() + 1));
+				param.add(patent.getPatentType());
+			}
+			if (patent.getPatentName() != null
+					&& !"".equals(patent.getPatentName())) {
+				if (param.size() > 0) {
+					str = " and ";
+				}
+				whereStr
+						.append(str + " patentName like ?" + (param.size() + 1));
+				param.add("%" + patent.getPatentName().trim() + "%");
+				str = "";
+			}
+			if (patent.getDeclareName() != null
+					&& !"".equals(patent.getDeclareName())) {
+				if (param.size() > 0) {
+					str = " and ";
+				}
+				whereStr.append(str + " declareName like ?"
+						+ (param.size() + 1));
+				param.add("%" + this.patent.getDeclareName().trim() + "%");
+				str = "";
+			}
+			if (this.patentQuality != null && !"".equals(this.patentQuality)) {
+				if (param.size() > 0) {
+					str = " and ";
+				}
+				if ("high".equals(this.patentQuality)) {
+					whereStr.append(str + " rightRequestItems >= ?"
+							+ (param.size() + 1));
+					param.add(3);
+				} else {
+					whereStr.append(str + " rightRequestItems < ?"
+							+ (param.size() + 1));
+					param.add(3);
+				}
+
+				str = "";
+			}
+			if (!isStreetAuditor && patent.getRegion() != null
+					&& !"".equals(patent.getRegion())) {
+				if (param.size() > 0) {
+					str = " and ";
+				}
+				whereStr.append(str + " region=?" + (param.size() + 1));
+				param.add(patent.getRegion().trim());
+				str = "";
+			}
+			// 如果是街道则加上街道条件限制，否则不加条件
+
+			/*
+			 * if (isStreetAuditor&&patent.getRegion() != null &&
+			 * !"".equals(patent.getRegion())) { if (param.size() > 0) { str =
+			 * " and "; } whereStr.append(str + " region=?" + (param.size() +
+			 * 1)); param.add(patent.getRegion().trim()); str = ""; }
+			 */
+
+		}
+	}
+
+	/**
+	 * 获取按年份统计的专利统计信息
+	 * {"series":[{"name":"Tokyo","data":[7,6.9,9.5,14.5,18.2,21.5
+	 * ]},{"name":"New York","data":[0.2,0.8,5.7,11.3,17,22]}],
+	 * "categories":["2012-01-01"
+	 * ,"2012-03-03","2012-05-01","2012-08-01","2012-10-01","2012-11-11"] }
+	 */
+	public void getPatentByYearJsonData() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<Map> series = new ArrayList<Map>();
+		// 统计2012-2016年数据
+		List<String> categories = new ArrayList<String>();
+		for (int year = 2012; year <= 2016; year++) {
+			categories.add(year + "");
+		}
+
+		for (int i = 1; i <= 8; i++) {
+			Map<String, Object> m = new HashMap<String, Object>();
+			List<BigInteger> data = new ArrayList<BigInteger>();
+			data
+					.add(tableTypeService.getYearPatents(i, 2012) != null ? tableTypeService
+							.getYearPatents(i, 2012).getPatentNum()
+							: BigInteger.ZERO);
+			data
+					.add(tableTypeService.getYearPatents(i, 2013) != null ? tableTypeService
+							.getYearPatents(i, 2013).getPatentNum()
+							: BigInteger.ZERO);
+			data
+					.add(tableTypeService.getYearPatents(i, 2014) != null ? tableTypeService
+							.getYearPatents(i, 2014).getPatentNum()
+							: BigInteger.ZERO);
+			data
+					.add(tableTypeService.getYearPatents(i, 2015) != null ? tableTypeService
+							.getYearPatents(i, 2015).getPatentNum()
+							: BigInteger.ZERO);
+			data
+					.add(tableTypeService.getYearPatents(i, 2016) != null ? tableTypeService
+							.getYearPatents(i, 2016).getPatentNum()
+							: BigInteger.ZERO);
+			m.put("name", patentTypes.get(i + ""));
+			m.put("data", data);
+			// 初始化隐藏功能
+			m.put("visible", false);
+			series.add(m);
+		}
+
+		map.put("series", series);
+		map.put("categories", categories);
+
+		try {
+			JSONObject resultObj = JSONObject.fromObject(map);
+			ServletActionContext.getResponse().setCharacterEncoding("utf-8");
+			ServletActionContext.getResponse().getWriter().print(resultObj);
+			ServletActionContext.getResponse().flushBuffer();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * 获取按年份统计视图
+	 * 
+	 * @return
+	 */
+	public String getPatentByYear() {
+
+		return "listbyyear";
+	}
+
+	/**
+	 * 获取按地区统计的专利统计信息
+	 * 
+	 * @return
+	 */
+	public String getPatentByArea() {
+		PageView<PatentCountInfo> pageView = new PageView<PatentCountInfo>(10,
+				page);
+		int firstindex = (pageView.getCurrentpage() - 1)
+				* pageView.getMaxresult();
+
+		StringBuilder whereStr = new StringBuilder("");
+		List<Object> params = new LinkedList<Object>();
+		addWhereSql(whereStr, params);
+
+		QueryResult<PatentCountInfo> qr = tableTypeService
+				.getPatentCountInfosByRegion(firstindex, pageView
+						.getMaxresult(), whereStr.toString(), params.toArray());
+		pageView.setRecords(qr.getResultlist());
+		pageView.setTotalrecords((int) qr.getTotalrecord());
+		ActionContext.getContext().put("pageView", pageView);
+
+		/* 导出统计信息到excel */
+		// exportToExcel(qr.getResultlist(),"按地区统计的专利信息", null);
+		return "listbyarea";
+	}
+
+	/**
+	 * 获取按代理机构统计的专利统计信息
+	 * 
+	 * @return
+	 */
+	public String getPatentByAgency() {
+		PageView<PatentCountInfo> pageView = new PageView<PatentCountInfo>(10,
+				page);
+		int firstindex = (pageView.getCurrentpage() - 1)
+				* pageView.getMaxresult();
+
+		StringBuilder whereStr = new StringBuilder("");
+		List<Object> params = new LinkedList<Object>();
+		addWhereSql(whereStr, params);
+
+		QueryResult<PatentCountInfo> qr = tableTypeService
+				.getPatentCountInfosByAgency(firstindex, pageView
+						.getMaxresult(), whereStr.toString(), params.toArray());
+		pageView.setRecords(qr.getResultlist());
+		pageView.setTotalrecords((int) qr.getTotalrecord());
+		ActionContext.getContext().put("pageView", pageView);
+
+		// 获取所有地区
+		String[] areas = ConfigTool.getAreas();
+		ActionContext.getContext().put("areas", areas);
+		String[] agencys = ConfigTool.getAgencys();
+		ActionContext.getContext().put("agencys", agencys);
+		/* 导出统计信息到excel */
+		// exportToExcel(qr.getResultlist(),"按地区统计的专利信息", null);
+		return "listbyagency";
+	}
+
+	/**
+	 * 获取按申报者类型统计的专利统计信息
+	 * 
+	 * @return
+	 */
+	public String getPatentByDeclarerType() {
+		PageView<PatentCountInfo> pageView = new PageView<PatentCountInfo>(10,
+				page);
+		int firstindex = (pageView.getCurrentpage() - 1)
+				* pageView.getMaxresult();
+
+		StringBuilder whereStr = new StringBuilder("");
+		List<Object> params = new LinkedList<Object>();
+		addWhereSql(whereStr, params);
+
+		QueryResult<PatentCountInfo> qr = tableTypeService
+				.getPatentCountInfosByDeclarerType(firstindex, pageView
+						.getMaxresult(), whereStr.toString(), params.toArray());
+		pageView.setRecords(qr.getResultlist());
+		pageView.setTotalrecords((int) qr.getTotalrecord());
+		ActionContext.getContext().put("pageView", pageView);
+
+		// 获取所有地区
+		String[] areas = ConfigTool.getAreas();
+		ActionContext.getContext().put("areas", areas);
+		/* 导出统计信息到excel */
+		return "listbydeclarertype";
+	}
+
+	public String exportAgencyPatentToExcel() {
+		StringBuilder whereStr = new StringBuilder("");
+		List<Object> params = new LinkedList<Object>();
+
+		addWhereSql(whereStr, params);
+
+		QueryResult<PatentCountInfo> qr = tableTypeService
+				.getPatentCountInfosByAgency(-1, -1, whereStr.toString(),
+						params.toArray());
+		String title =  Calendar.getInstance().get(Calendar.YEAR)+"年度按代理机构分类统计信息";
+		exportToExcel(qr.getResultlist(), "按代理机构统计的专利信息", title, "代理机构",
+				"agencytongji.xls");
+		ActionContext.getContext().put("excelfilename", "agencytongji.xls");
+		return "toexcelfile";
+	}
+
+	/**
+	 * 导出所有以申报者类型的专利统计信息
+	 */
+	public String exportDeclareTypePatentToExcel() {
+		StringBuilder whereStr = new StringBuilder("");
+		List<Object> params = new LinkedList<Object>();
+
+		// //处理乱码
+		// try {
+		// region = new String(region.getBytes("iso8859-1"),"UTF-8");
+		// } catch (UnsupportedEncodingException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+		addWhereSql(whereStr, params);
+
+		QueryResult<PatentCountInfo> qr = tableTypeService
+				.getPatentCountInfosByDeclarerType(-1, -1, whereStr.toString(),
+						params.toArray());
+		String title =Calendar.getInstance().get(Calendar.YEAR)+ "年度按申请人类型资助统计信息";
+		exportToExcel(qr.getResultlist(), "按申请人类型的专利信息", title, "申请人类型",
+				"declareTypetongji.xls");
+		ActionContext.getContext()
+				.put("excelfilename", "declareTypetongji.xls");
+		return "toexcelfile";
+	}
+
+	/**
+	 * 导出所有以地区统计的专利统计信息
+	 */
+	@SuppressWarnings("deprecation")
+	public String exportAreaPatentToExcel() {
+		StringBuilder whereStr = new StringBuilder("");
+		List<Object> params = new LinkedList<Object>();
+		addWhereSql(whereStr, params);
+
+		QueryResult<PatentCountInfo> qr = tableTypeService
+				.getPatentCountInfosByRegion(-1, -1, whereStr.toString(),
+						params.toArray());
+        
+		String title =  Calendar.getInstance().get(Calendar.YEAR) + "年度镇江新区专利资助资金汇总表";
+		if (startDate != null && endDate != null) {
+			title = dateFormat(startDate) + "到" + dateFormat(endDate) + title;
+		}
+		exportToExcel(qr.getResultlist(), "按地区统计的专利信息", title, "地区",
+				"areatongji.xls");
+		ActionContext.getContext().put("excelfilename", "areatongji.xls");
+		return "toexcelfile";
+	}
+
+	/**
+	 * 获取按单位统计的专利统计信息
+	 */
+	public String getPatentByUnit() {
+		// 获取所有区域
+		String[] areas = ConfigTool.getAreas();
+		ActionContext.getContext().put("areas", areas);
+		PageView<PatentCountInfo> pageView = new PageView<PatentCountInfo>(10,
+				page);
+		int firstindex = (pageView.getCurrentpage() - 1)
+				* pageView.getMaxresult();
+		StringBuilder whereStr = new StringBuilder("");
+		List<Object> params = new LinkedList<Object>();
+		addWhereSql(whereStr, params);
+		QueryResult<PatentCountInfo> qr = tableTypeService
+				.getPatentCountInfosByUnit(firstindex, pageView.getMaxresult(),
+						this.bigFamilyGrade, whereStr.toString(), params
+								.toArray());
+		pageView.setRecords(qr.getResultlist());
+		pageView.setTotalrecords((int) qr.getTotalrecord());
+		ActionContext.getContext().put("pageView", pageView);
+		/* 导出统计信息到excel */
+
+		// exportToExcel(qr.getResultlist(),"按单位统计的专利信息", title);
+		return "listbyunit";
+	}
+
+	/**
+	 * 导出所有以单位统计的专利统计信息
+	 */
+	public String exportUnitPatentToExcel() {
+		StringBuilder whereStr = new StringBuilder("");
+		List<Object> params = new LinkedList<Object>();
+
+		// //处理乱码
+		// try {
+		// unitName = new String(unitName.getBytes("iso8859-1"),"UTF-8");
+		// region = new String(region.getBytes("iso8859-1"),"UTF-8");
+		// } catch (UnsupportedEncodingException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+
+		addWhereSql(whereStr, params);
+
+		QueryResult<PatentCountInfo> qr = tableTypeService
+				.getPatentCountInfosByUnit(-1, -1, null, whereStr.toString(),
+						params.toArray());
+
+		String fileSavePath = "/upload/excel";// 生成文件路径
+		String fileSaveName = "unittongji.xls";// 生成保存文件名
+		File excelFile = generateFile(fileSavePath, fileSaveName);
+		// exportToExcel(qr.getResultlist(),"按单位统计的专利信息", null,"单位/个人名称");
+
+		ExcelTool.unitListTOExcel(excelFile, qr.getResultlist(), "按单位统计的专利信息",
+				0, Calendar.getInstance().get(Calendar.YEAR) + "年度镇江市专利资助资金汇总表", "单位/个人");
+		ActionContext.getContext().put("excelfilename", fileSaveName);
+		return "toexcelfile";
+	}
+
+	/**
+	 * 获取按IPC分类号统计的专利统计信息
+	 * 
+	 * @return
+	 */
+	public String getPatentByIPC() {
+		// 获取所有区域
+		String[] areas = ConfigTool.getAreas();
+		ActionContext.getContext().put("areas", areas);
+
+		PageView<PatentCountInfo> pageView = new PageView<PatentCountInfo>(10,
+				page);
+		int firstindex = (pageView.getCurrentpage() - 1)
+				* pageView.getMaxresult();
+
+		StringBuilder whereStr = new StringBuilder("");
+		List<Object> params = new LinkedList<Object>();
+		addWhereSql(whereStr, params);
+
+		QueryResult<PatentCountInfo> qr = tableTypeService
+				.getPatentCountInfosByIPCType(firstindex, pageView
+						.getMaxresult(), whereStr.toString(), params.toArray());
+		pageView.setRecords(qr.getResultlist());
+		pageView.setTotalrecords((int) qr.getTotalrecord());
+		ActionContext.getContext().put("pageView", pageView);
+
+		/* 导出统计信息到excel */
+		// exportToExcel(qr.getResultlist(),"按IPC分类号统计的专利信息");
+		return "listbyIPC";
+	}
+
+	/**
+	 * 导出所有以IPC统计的专利统计信息
+	 */
+	public String exportIPCPatentToExcel() {
+		StringBuilder whereStr = new StringBuilder("");
+		List<Object> params = new LinkedList<Object>();
+		// //处理乱码
+		// try {
+		// region = new String(region.getBytes("iso8859-1"),"UTF-8");
+		// } catch (UnsupportedEncodingException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+		addWhereSql(whereStr, params);
+
+		QueryResult<PatentCountInfo> qr = tableTypeService
+				.getPatentCountInfosByIPCType(-1, -1, whereStr.toString(),
+						params.toArray());
+		String title = Calendar.getInstance().get(Calendar.YEAR) +"年度按IPC分类统计信息";
+		exportToExcel(qr.getResultlist(), "按IPCType统计的专利信息", title, "IPC分类名称",
+				"IPCtongji.xls");
+		ActionContext.getContext().put("excelfilename", "IPCtongji.xls");
+		return "toexcelfile";
+	}
+
+	/**
+	 * 根据专利的当前状态，判断所需要的审核权限,并返回相应的审核权限 state=0_放弃本次审核,11_一级审核通过,10_一级审核不通过
+	 * 21_二级审核通过,20_二级审核不通过, 31_三级审核通过,30_三级审核不通过, 41_四级审核通过,40_四级审核不通过,
+	 * 51_五级审核通过,50_五级审核不通过 五级为终级审核
+	 */
+	private Set<SystemPrivilege> getSystemPrivilegeByStateNo(
+			Integer currentStateNo) {
+		Set<SystemPrivilege> set = new HashSet<SystemPrivilege>();
+		switch (currentStateNo) {
+		// 状态为2时，可以进行一级审核
+		case 2:
+			set.add(new SystemPrivilege("audit", "grade_1", "一级审核功能"));
+			break;
+		// 状态为11（一级审核通过时），可以继续一级审核或者二级审核
+		case 11:
+			set.add(new SystemPrivilege("audit", "grade_1", "一级审核功能"));
+			set.add(new SystemPrivilege("audit", "grade_2", "二级审核功能"));
+			break;
+		// 状态为10（一级审核不通过时），可以继续一级审核
+		case 10:
+			set.add(new SystemPrivilege("audit", "grade_1", "一级审核功能"));
+			break;
+		// 状态为21（二级审核通过时），可以继续二级审核或者三级审核
+		case 21:
+			set.add(new SystemPrivilege("audit", "grade_2", "二级审核功能"));
+			set.add(new SystemPrivilege("audit", "grade_3", "三级审核功能"));
+			break;
+		// 状态为20（二级审核不通过时），可以继续二级审核
+		case 20:
+			set.add(new SystemPrivilege("audit", "grade_2", "二级审核功能"));
+			break;
+		// 状态为31（三级审核通过时），可以继续三级审核或者四级审核
+		case 31:
+			set.add(new SystemPrivilege("audit", "grade_3", "三级审核功能"));
+			set.add(new SystemPrivilege("audit", "grade_4", "四级审核功能"));
+			break;
+		// 状态为30（三级审核不通过时），可以继续三级审核
+		case 30:
+			set.add(new SystemPrivilege("audit", "grade_3", "三级审核功能"));
+			break;
+		// 状态为41（四级审核通过时），可以继续四级审核或者五级审核
+		case 41:
+			set.add(new SystemPrivilege("audit", "grade_4", "四级审核功能"));
+			set.add(new SystemPrivilege("audit", "grade_5", "五级审核功能"));
+			break;
+		// 状态为40（四级审核不通过时），可以继续四级审核
+		case 40:
+			set.add(new SystemPrivilege("audit", "grade_4", "四级审核功能"));
+			break;
+		// 状态为51（五级审核通过时），可以继续五级审核
+
+		case 51:
+			set.add(new SystemPrivilege("audit", "grade_5", "五级审核功能"));
+			break;
+		// 状态为50（五级审核不通过时），可以继续五级审核
+		case 50:
+			set.add(new SystemPrivilege("audit", "grade_5", "五级审核功能"));
+			break;
+		default:
+			break;
+		}
+
+		// System.out.println("专利状态所可以进行的审核权限" + set);
+		return set;
+	}
+
+	/*
+	 * 判断一个专利状态所需要的审核权限是否与管理员所具有的审核权限匹配
+	 */
+	private Boolean audit(Master master, Set<SystemPrivilege> set) {
+
+		for (SystemPrivilege systemPrivilege : master
+				.getMasterSystemPrivileges()) {
+			if (set.contains(systemPrivilege)) {
+				return true;
+			}
+		}
+		return false;
+
+	}
+
+	/**
+	 * 根据一个ids数组，批量审核专利
+	 */
+
+	public String batchAlterState() {
+		ActionContext.getContext().put(
+				"urladdress",
+				"/control/patent/list?page=" + page + "&patent.patentName="
+						+ patentCondition.getPatentName()
+						+ "&patent.declareName="
+						+ patentCondition.getDeclareName() + "&patent.stateNO="
+						+ patentCondition.getStateNO() + "&patent.patentType="
+						+ patentCondition.getPatentType() + "&patent.region="
+						+ patentCondition.getRegion());
+		ActionContext.getContext().put("message", "本次审核操作无效，请选择需要审核的专利");
+
+		String[] ids = this.ids.split(",");
+		if (ids != null&&!"".equals(ids) && ids.length > 0) {
+			for (int i = 0; i < ids.length; i++) {
+				try {
+					Integer id = Integer.parseInt(ids[i]);
+					Map<String, String> stateMap = ConfigTool.getStates();
+					Short currentStateNo = tableTypeService.find(id)
+							.getStateNO();
+					Integer stateNO = this.patent.getStateNO().intValue();
+					Boolean auditRightFlag = audit(
+							WebTool.getLoginedMaster(ServletActionContext
+									.getRequest()),
+							getSystemPrivilegeByStateNo(currentStateNo
+									.intValue()));
+
+					if (auditRightFlag) {
+						if (tableTypeService.editState(stateNO, id, suggest)) {
+							ActionContext.getContext().put("message",
+									"本次审核操作成功");
+							/* 获得所有状态 */
+							/* 将查询条件带回去 */
+							String operationContent = stateMap.get(stateNO
+									.toString());
+							auditRecordService.recordOperation(
+									"申请资助专利详细信息->修改状态", "修改("
+											+ tableTypeService.find(id)
+													.getPatentNo() + ")状态为"
+											+ operationContent);
+						}
+
+					} else {
+						String masterRoleInfo = new String();
+
+						Master loginMaster = WebTool
+								.getLoginedMaster(ServletActionContext
+										.getRequest());
+
+						Set<PrivilegeGroup> privilegeGroups = loginMaster
+								.getGroups();
+						for (PrivilegeGroup privilegeGroup : privilegeGroups) {
+							masterRoleInfo = privilegeGroup.getName() + "   ";
+						}
+
+						ActionContext.getContext().put(
+								"message",
+								"您拥有的审核角色为"
+										+ masterRoleInfo
+										+ ",当前专利项目审核状态为"
+										+ stateMap.get(currentStateNo
+												.toString())
+										+ ",审核角色与专利项目状态不一致，您无法进行审核操作！");
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return "message";
+	}
+
+	/**
+	 * 修改申请的状态 审核功能要根据管理员权限与审核状态综合考虑
+	 */
+
+	public String alterState() {
+		ActionContext.getContext().put(
+				"urladdress",
+				"/control/patent/list?page=" + page + "&patent.patentName="
+						+ patentCondition.getPatentName()
+						+ "&patent.declareName="
+						+ patentCondition.getDeclareName() + "&patent.stateNO="
+						+ patentCondition.getStateNO() + "&patent.patentType="
+						+ patentCondition.getPatentType() + "&patent.region="
+						+ patentCondition.getRegion());
+		ActionContext.getContext().put("message", "本次审核操作无效");
+
+		if (this.patent != null && this.patent.getStateNO() != null
+				&& this.patent.getStateNO() != 0 && this.patent.getId() != null) {
+			Map<String, String> stateMap = ConfigTool.getStates();
+			Short currentStateNo = tableTypeService.find(this.patent.getId())
+					.getStateNO();
+			Integer stateNO = this.patent.getStateNO().intValue();
+			Boolean auditRightFlag = audit(WebTool
+					.getLoginedMaster(ServletActionContext.getRequest()),
+					getSystemPrivilegeByStateNo(currentStateNo.intValue()));
+
+			if (auditRightFlag) {
+				if (tableTypeService.editState(stateNO, this.patent.getId(),
+						suggest)) {
+					ActionContext.getContext().put("message", "本次审核操作成功");
+					/* 获得所有状态 */
+					/* 将查询条件带回去 */
+
+					String operationContent = stateMap.get(stateNO.toString());
+					auditRecordService.recordOperation("申请资助专利详细信息->修改状态",
+							"修改("
+									+ tableTypeService
+											.find(this.patent.getId())
+											.getPatentNo() + ")状态为"
+									+ operationContent);
+				}
+
+			} else {
+				String masterRoleInfo = new String();
+
+				Master loginMaster = WebTool
+						.getLoginedMaster(ServletActionContext.getRequest());
+
+				Set<PrivilegeGroup> privilegeGroups = loginMaster.getGroups();
+				for (PrivilegeGroup privilegeGroup : privilegeGroups) {
+					masterRoleInfo = privilegeGroup.getName() + "   ";
+				}
+
+				ActionContext.getContext().put(
+						"message",
+						"您拥有的审核角色为" + masterRoleInfo + ",当前专利项目审核状态为"
+								+ stateMap.get(currentStateNo.toString())
+								+ ",审核角色与专利项目状态不一致，您无法进行审核操作！");
+			}
+		}
+
+		return "message";
+	}
+
+	/*
+	 * 上传资助政策文件界面
+	 */
+	public String uploadUI() {
+		return "uploadUI";
+	}
+
+	public String upload() {
+		if (this.file != null) {
+			if (this.file.length() <= 0 && this.file.length() > 1024 * 1024 * 5) {
+				ActionContext.getContext().put("message", "上传文件大小不能超过5M");
+				ActionContext.getContext().put("urladdress",
+						"/control/patent/uploadUI");
+				return "message";
+			}
+
+			// 上传文件大小，要小于1M
+			if (!volidateFileType(file, fileContentType, fileFileName)) {// 是否为允许上传的格式
+				ActionContext.getContext().put("message", "上传格式不正确");
+				ActionContext.getContext().put("urladdress",
+						"/control/patent/uploadUI");
+				return "message";
+			}
+
+			String fileSavePath = "/upload/aidpolicy";// 生成文件路径,资助政策存放路径
+			// String fileSaveName =
+			// generateFileSaveName(fileFileName);//生成保存文件名
+			String fileSaveName = fileFileName;
+			/* 保存图片 */
+			this.saveFile(this.file, fileSavePath, fileSaveName);
+
+			ActionContext.getContext().put("message", "文件上传成功");
+			ActionContext.getContext().put("urladdress",
+					"/control/patent/listAidPolicyFiles");
+
+		} else {
+			ActionContext.getContext().put("message", "上传文件为空");
+			ActionContext.getContext().put("urladdress",
+					"/control/patent/uploadUI");
+		}
+		return "message";
+	}
+
+	private void exportToExcel(List<PatentCountInfo> list, String sheetname,
+			String title, String head1, String excelFileName) {
+		String fileSavePath = "/upload/excel";// 生成文件路径
+		String fileSaveName = excelFileName;// 生成保存文件名
+		File excelFile = generateFile(fileSavePath, fileSaveName);
+		ExcelTool.listTOExcel(excelFile, list, sheetname, 1, title, head1);
+	}
+
+	private File generateFile(String fileSavePath, String fileSaveName) {
+
+		String realpath = ServletActionContext.getServletContext().getRealPath(
+				fileSavePath);
+		File filepathdir = new File(realpath);
+		if (!filepathdir.exists()) {
+			filepathdir.mkdirs();
+		}
+
+		File excelFile = new File(realpath, fileSaveName);
+		/* 如果文件不存在，则创建一个新的 */
+		if (!excelFile.exists()) {
+			try {
+				excelFile.createNewFile();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return excelFile;
+	}
+
+	/**
+	 * 查看申请材料
+	 */
+	public String getDeclareMaterial() {
+
+		if (patent != null) {
+
+			PageView<DeclareMaterial> pageView = new PageView<DeclareMaterial>(
+					10, page);
+			int firstindex = (pageView.getCurrentpage() - 1)
+					* pageView.getMaxresult();
+
+			StringBuilder whereStr = new StringBuilder("o.tableType.id=?1");
+			List<Object> params = new LinkedList<Object>();
+			params.add(patent.getId());
+
+			QueryResult<DeclareMaterial> qr = declareMaterialService
+					.getScrollData(-1, -1, whereStr.toString(), params
+							.toArray());
+			pageView.setRecords(qr.getResultlist());
+			pageView.setTotalrecords((int) qr.getTotalrecord());
+			// 将专利信息回显
+			tableType = tableTypeService.find(patent.getId());
+
+			// 将专利信息回显
+			ActionContext.getContext().put("tableTypeid", patent.getId());
+			ServletActionContext.getRequest().removeAttribute("pageView");
+			ActionContext.getContext().put("pageView", pageView);
+			//System.out.println("附件大小：" + pageView.getTotalrecords());
+		}
+		return "declareMaterialList";
+	}
+
+	/**
+	 * 删除申报材料
+	 * 
+	 * @return
+	 */
+	public String delDeclareMaterial() {
+		if (declareMaterialId != null && declareMaterialId > 0) {
+			declareMaterialService.delete(declareMaterialId);
+		}
+		return "delMaterialRedirect";
+	}
+
+	/*
+	 * 配置专利资助金额界面
+	 */
+	public String editPatentTypePrice() {
+
+		patentType1_h_sch = ConfigTool.getMoney("patentType1_h_sch");
+		patentType1_h_co = ConfigTool.getMoney("patentType1_h_co");
+		patentType1_c_sch = ConfigTool.getMoney("patentType1_c_sch");
+		patentType1_c_co = ConfigTool.getMoney("patentType1_c_co");
+		patentType2_h_sch = ConfigTool.getMoney("patentType2_h_sch");
+		patentType2_h_co = ConfigTool.getMoney("patentType2_h_co");
+		patentType2_c_sch = ConfigTool.getMoney("patentType2_c_sch");
+		patentType2_c_co = ConfigTool.getMoney("patentType2_c_co");
+		patentType4_h = ConfigTool.getMoney("patentType4_h");
+		patentType4_c = ConfigTool.getMoney("patentType4_c");
+
+		return "patentTypePrice";
+	}
+
+	/*
+	 * public String editPatentTypePrice() { auditGradeLastState =
+	 * ConfigTool.getAuditGradeLastState().toString(); startDate =
+	 * ConfigTool.getAuditStartDate(); endDate = ConfigTool.getAuditEndDate();
+	 * Map<Integer, Integer> patentTypePrices = ConfigTool
+	 * .getPatentTypePrice(); patentTypePrice1 = patentTypePrices.get(1);
+	 * patentTypePrice2 = patentTypePrices.get(2); patentTypePrice3 =
+	 * patentTypePrices.get(3); patentTypePrice4 = patentTypePrices.get(4);
+	 * patentTypePrice5 = patentTypePrices.get(5); patentTypePrice6 =
+	 * patentTypePrices.get(6); patentTypePrice7 = patentTypePrices.get(7);
+	 * patentTypePrice8 = patentTypePrices.get(8); patentTypePrice9 =
+	 * patentTypePrices.get(9); // 获取所有专利类型 Map<String, String> patentTypes =
+	 * ConfigTool.getPatentType(); String patentTypeName1 =
+	 * patentTypes.get("1"); String patentTypeName2 = patentTypes.get("2");
+	 * String patentTypeName3 = patentTypes.get("3"); String patentTypeName4 =
+	 * patentTypes.get("4"); String patentTypeName5 = patentTypes.get("5");
+	 * String patentTypeName6 = patentTypes.get("6"); String patentTypeName7 =
+	 * patentTypes.get("7"); String patentTypeName8 = patentTypes.get("8");
+	 * String patentTypeName9 = patentTypes.get("9");
+	 * 
+	 * ActionContext.getContext().put("patentTypeName1", patentTypeName1);
+	 * ActionContext.getContext().put("patentTypeName2", patentTypeName2);
+	 * ActionContext.getContext().put("patentTypeName3", patentTypeName3);
+	 * ActionContext.getContext().put("patentTypeName4", patentTypeName4);
+	 * ActionContext.getContext().put("patentTypeName5", patentTypeName5);
+	 * ActionContext.getContext().put("patentTypeName6", patentTypeName6);
+	 * ActionContext.getContext().put("patentTypeName7", patentTypeName7);
+	 * ActionContext.getContext().put("patentTypeName8", patentTypeName8);
+	 * ActionContext.getContext().put("patentTypeName9", patentTypeName9);
+	 * ActionContext.getContext() .put("startDateString",
+	 * dateFormat(startDate)); ActionContext.getContext().put("endDateString",
+	 * dateFormat(endDate)); return "patentTypePrice"; }
+	 */
+
+	/*
+	 * 设置大户资助参数界面 1 发明专利申请 2 发明专利授权 3 实用新型专利申请 4 实用新型专利授权 5 外观设计专利申请 6 外观设计专利授权
+	 * 7 PCT专利申请 8 PCT专利授权 9 发明专利年费资助
+	 */
+	public String editRichFamilyParas() {
+
+		Map<Integer, Integer> patentTypeParas = ConfigTool.getPatentTypePara();
+		patentTypePara1 = patentTypeParas.get(1);
+		patentTypePara2 = patentTypeParas.get(2);
+		patentTypePara3 = patentTypeParas.get(3);
+		patentTypePara4 = patentTypeParas.get(4);
+		patentTypePara5 = patentTypeParas.get(5);
+		patentTypePara6 = patentTypeParas.get(6);
+		patentTypePara7 = patentTypeParas.get(7);
+		patentTypePara8 = patentTypeParas.get(8);
+		patentTypePara9 = patentTypeParas.get(9);
+		totalScore1 = ConfigTool.getTotalScore(1);
+		totalMoney1 = ConfigTool.getTotalMoney(1);
+		totalScore2 = ConfigTool.getTotalScore(2);
+		totalMoney2 = ConfigTool.getTotalMoney(2);
+		totalScore3 = ConfigTool.getTotalScore(3);
+		totalMoney3 = ConfigTool.getTotalMoney(3);
+		totalScore4 = ConfigTool.getTotalScore(4);
+		totalMoney4 = ConfigTool.getTotalMoney(4);
+		totalScore5 = ConfigTool.getTotalScore(5);
+		totalMoney5 = ConfigTool.getTotalMoney(5);
+		// 获取所有专利类型
+		Map<String, String> patentTypes = ConfigTool.getPatentType();
+		String patentTypeName1 = patentTypes.get("1");
+		String patentTypeName2 = patentTypes.get("2");
+		String patentTypeName3 = patentTypes.get("3");
+		String patentTypeName4 = patentTypes.get("4");
+		String patentTypeName5 = patentTypes.get("5");
+		String patentTypeName6 = patentTypes.get("6");
+		String patentTypeName7 = patentTypes.get("7");
+		String patentTypeName8 = patentTypes.get("8");
+		String patentTypeName9 = patentTypes.get("9");
+		ActionContext.getContext().put("patentTypeName1", patentTypeName1);
+		ActionContext.getContext().put("patentTypeName2", patentTypeName2);
+		ActionContext.getContext().put("patentTypeName3", patentTypeName3);
+		ActionContext.getContext().put("patentTypeName4", patentTypeName4);
+		ActionContext.getContext().put("patentTypeName5", patentTypeName5);
+		ActionContext.getContext().put("patentTypeName6", patentTypeName6);
+		ActionContext.getContext().put("patentTypeName7", patentTypeName7);
+		ActionContext.getContext().put("patentTypeName8", patentTypeName8);
+		ActionContext.getContext().put("patentTypeName9", patentTypeName9);
+		return "patentTypePara";
+	}
+
+	/*
+	 * 更新资助金额
+	 */
+	public String updatePatentTypePrice() {
+		String patentTypePriceInfo = "";
+		ConfigTool.setPorperTyToFile("patentType1_h_sch", patentType1_h_sch
+				.toString());
+		ConfigTool.setPorperTyToFile("patentType1_h_co", patentType1_h_co
+				.toString());
+		ConfigTool.setPorperTyToFile("patentType1_c_sch", patentType1_c_sch
+				.toString());
+		ConfigTool.setPorperTyToFile("patentType1_c_co", patentType1_c_co
+				.toString());
+		ConfigTool.setPorperTyToFile("patentType2_h_sch", patentType2_h_sch
+				.toString());
+		ConfigTool.setPorperTyToFile("patentType2_h_co", patentType2_h_co
+				.toString());
+		ConfigTool.setPorperTyToFile("patentType2_c_sch", patentType2_c_sch
+				.toString());
+		ConfigTool.setPorperTyToFile("patentType2_c_co", patentType2_c_co
+				.toString());
+		ConfigTool.setPorperTyToFile("patentType4_h", patentType4_h.toString());
+		ConfigTool.setPorperTyToFile("patentType4_c", patentType4_c.toString());
+
+		patentTypePriceInfo = patentTypePriceInfo + "发明专利申请__高质量(高校):"
+				+ patentType1_h_sch.toString() + ",";
+		patentTypePriceInfo = patentTypePriceInfo + "发明专利申请__高质量(企业、个人):"
+				+ patentType1_h_co.toString() + ",";
+		patentTypePriceInfo = patentTypePriceInfo + "发明专利申请__一般质量(高校): "
+				+ patentType1_c_sch.toString() + ",";
+		patentTypePriceInfo = patentTypePriceInfo + "发明专利申请__一般质量(企业、个人):"
+				+ patentType1_c_co.toString() + ",";
+		patentTypePriceInfo = patentTypePriceInfo + "发明专利授权__高质量(高校) :"
+				+ patentType2_h_sch.toString() + ",";
+		patentTypePriceInfo = patentTypePriceInfo + " 发明专利授权__高质量(企业、个人):"
+				+ patentType2_h_co.toString() + ",";
+		patentTypePriceInfo = patentTypePriceInfo + "发明专利授权__一般质量(高校) :"
+				+ patentType2_c_sch.toString() + ",";
+		patentTypePriceInfo = patentTypePriceInfo + "发明专利授权__一般质量(企业、个人):"
+				+ patentType2_c_co.toString() + ",";
+		patentTypePriceInfo = patentTypePriceInfo + "实用新型专利授权__高质量:"
+				+ patentType4_h.toString() + ",";
+		patentTypePriceInfo = patentTypePriceInfo + "实用新型专利授权__一般质量:"
+				+ patentType4_c.toString();
+		auditRecordService.recordOperation("设置资助金额", "设置资助金额信息："
+				+ patentTypePriceInfo);
+		ActionContext.getContext().put("message", "配置文件修改成功");
+		ActionContext.getContext().put("urladdress",
+				"/control/patent/editPatentTypePrice");
+		return "message";
+	}
+
+	/*
+	 * public String updatePatentTypePrice() { // 组装patentTypePrice的值 String
+	 * patentTypePrice = "1_" + patentTypePrice1 + ",2_" + patentTypePrice2 +
+	 * ",3_" + patentTypePrice3 + ",4_" + patentTypePrice4 + ",5_" +
+	 * patentTypePrice5 + ",6_" + patentTypePrice6 + ",7_" + patentTypePrice7 +
+	 * ",8_" + patentTypePrice8 + ",9_" + patentTypePrice9;
+	 * 
+	 * ConfigTool.setPorperTyToFile("patentTypePrice", patentTypePrice);
+	 * ConfigTool .setPorperTyToFile("auditGradeLastState",
+	 * auditGradeLastState);
+	 * 
+	 * ConfigTool.setPorperTyToFile("auditStartDate", ServletActionContext
+	 * .getRequest().getParameter("startDateString"));
+	 * ConfigTool.setPorperTyToFile("auditEndDate", ServletActionContext
+	 * .getRequest().getParameter("endDateString"));
+	 * auditRecordService.recordOperation("设置资助金额", "设置资助金额信息：" +
+	 * patentTypePrice); ActionContext.getContext().put("message", "配置文件修改成功");
+	 * ActionContext.getContext().put("urladdress",
+	 * "/control/patent/editPatentTypePrice"); return "message"; }
+	 */
+
+	/*
+	 * 更新大户参数
+	 */
+	public String updatePatentTypePara() {
+		// 组装patentTypePara的值
+		String patentTypePara = "1_" + patentTypePara1 + ",2_"
+				+ patentTypePara2 + ",3_" + patentTypePara3 + ",4_"
+				+ patentTypePara4 + ",5_" + patentTypePara5 + ",6_"
+				+ patentTypePara6 + ",7_" + patentTypePara7 + ",8_"
+				+ patentTypePara8 + ",9_" + patentTypePara9;
+		ConfigTool.setPorperTyToFile("patentTypePara", patentTypePara);
+		ConfigTool.setPorperTyToFile("totalScore1", totalScore1.toString());
+		ConfigTool.setPorperTyToFile("totalMoney1", totalMoney1.toString());
+		ConfigTool.setPorperTyToFile("totalScore2", totalScore2.toString());
+		ConfigTool.setPorperTyToFile("totalMoney2", totalMoney2.toString());
+		ConfigTool.setPorperTyToFile("totalScore3", totalScore3.toString());
+		ConfigTool.setPorperTyToFile("totalMoney3", totalMoney3.toString());
+		ConfigTool.setPorperTyToFile("totalScore4", totalScore4.toString());
+		ConfigTool.setPorperTyToFile("totalMoney4", totalMoney4.toString());
+		ConfigTool.setPorperTyToFile("totalScore5", totalScore5.toString());
+		ConfigTool.setPorperTyToFile("totalMoney5", totalMoney5.toString());
+		// auditRecordService.recordOperation("设置资助金额", "设置资助金额信息："
+		// + patentTypePara);
+		ActionContext.getContext().put("message", "大户资助参数设置成功");
+		ActionContext.getContext().put("urladdress",
+				"/control/patent/editRichFamilyParas");
+		return "message";
+	}
+
+	/**
+	 * 设置区域界面
+	 * 
+	 * @return
+	 */
+	public String editRegion() {
+		// 获取所有区域
+		String[] areas = ConfigTool.getAreas();
+		StringBuilder areastring = new StringBuilder("");
+		for (String area : areas) {
+			areastring.append(area).append("_");
+		}
+		if (areastring.length() > 0) {
+			areastring.deleteCharAt(areastring.length() - 1);
+		}
+
+		ActionContext.getContext().put("areas", areastring.toString());
+		return "editregion";
+	}
+
+	public String updateRegion() {
+		ActionContext.getContext().put("message", "区域设置失败");
+		ActionContext.getContext().put("urladdress",
+				"/control/patent/editRegion");
+		if (region != null && !"".equals(region)) {
+			region = region.replace("_", ",");
+			ConfigTool.setPorperTyToFile("area", region);
+			auditRecordService.recordOperation("设置区域", "设置区域信息：" + region);
+			ActionContext.getContext().put("message", "区域设置成功");
+		}
+		return "message";
+	}
+
+	/**
+	 * 设置代理机构页面
+	 * 
+	 * @return
+	 */
+	public String editAgency() {
+		// 获取所有区域
+		String[] agencys = ConfigTool.getAgencys();
+		StringBuilder agencyString = new StringBuilder("");
+		for (String agency : agencys) {
+			agencyString.append(agency).append("_");
+		}
+		if (agencyString.length() > 0) {
+			agencyString.deleteCharAt(agencyString.length() - 1);
+		}
+
+		ActionContext.getContext().put("agencys", agencyString.toString());
+		return "editagency";
+	}
+
+	public String updateAgency() {
+		ActionContext.getContext().put("message", "代理机构设置失败");
+		ActionContext.getContext().put("urladdress",
+				"/control/patent/editAgency");
+		if (agency != null && !"".equals(agency)) {
+			agency = agency.replace("_", ",");
+			ConfigTool.setPorperTyToFile("agencys", agency);
+			//auditRecordService.recordOperation("设置代理机构", "设置代理机构信息：" + agency);
+			auditRecordService.recordOperation("设置代理机构", "设置代理机构信息");
+			ActionContext.getContext().put("message", "代理机构设置成功");
+		}
+		return "message";
+	}
+
+	/**
+	 * 组装查询语句
+	 */
+	private void addWhereSql(StringBuilder whereStr, List<Object> params) {
+
+		if (whereStr != null) {
+			String str = "";
+			
+			if (this.unitName != null && !"".equals(this.unitName)) {
+				if (params.size() > 0) {
+					str = " and ";
+				}
+				whereStr.append(str + " unitName like ?" + (params.size() + 1));
+				params.add("%" + this.unitName.trim() + "%");
+				str = "";
+			}
+			if (this.patent!=null&&this.patent.getStateNO() != null && this.patent.getStateNO() != -1) {
+				if (params.size() > 0) {
+					str = " and ";
+				}
+				whereStr.append(str + " stateNO=?" + (params.size() + 1));
+				params.add(patent.getStateNO());
+				str = "";
+			}
+			if (this.agency != null && !"".equals(this.agency)) {
+				if (params.size() > 0) {
+					str = " and ";
+				}
+				whereStr.append(str + " agency=?" + (params.size() + 1));
+				params.add(this.agency.trim());
+				str = "";
+			}
+
+			if (this.region != null && !"".equals(this.region)) {
+				if (params.size() > 0) {
+					str = " and ";
+				}
+				whereStr.append(str + " region=?" + (params.size() + 1));
+				params.add(this.region);
+				str = "";
+			}
+
+			if (this.patentQuality != null && !"".equals(this.patentQuality)) {
+				if (params.size() > 0) {
+					str = " and ";
+				}
+				if ("high".equals(this.patentQuality)) {
+					whereStr.append(str + " rightRequestItems >= ?"
+							+ (params.size() + 1));
+					params.add(3);
+				} else {
+					whereStr.append(str + " rightRequestItems < ?"
+							+ (params.size() + 1));
+					params.add(3);
+				}
+
+				str = "";
+			}
+			if (this.startDate == null && this.endDate != null) {
+				if (params.size() > 0) {
+					str = " and ";
+				}
+				whereStr.append(str + "(declarationDatetime<=?"
+						+ (params.size() + 1));
+				params.add(this.endDate);
+				whereStr.append(" or grantDatetime<=?" + (params.size() + 1)
+						+ ")");
+				params.add(this.endDate);
+				str = "";
+			} else if (this.startDate != null && this.endDate == null) {
+				if (params.size() > 0) {
+					str = " and ";
+				}
+				whereStr.append(str + "(declarationDatetime>=?"
+						+ (params.size() + 1));
+				params.add(this.startDate);
+				whereStr.append(" or grantDatetime>=?" + (params.size() + 1)
+						+ ")");
+				params.add(this.startDate);
+				str = "";
+			} else if (this.startDate != null && this.endDate != null) {
+				if (params.size() > 0) {
+					str = " and ";
+				}
+				whereStr.append(str + "((declarationDatetime>=?"
+						+ (params.size() + 1));
+				params.add(this.startDate);
+				whereStr.append(" and declarationDatetime<=?"
+						+ (params.size() + 1) + ")");
+				params.add(this.endDate);
+				whereStr.append(" or (grantDatetime>=?" + (params.size() + 1));
+				params.add(this.startDate);
+				whereStr.append(" and grantDatetime<=?" + (params.size() + 1)
+						+ "))");
+				params.add(this.endDate);
+				str = "";
+			}
+
+			ActionContext.getContext().put("startDateString",
+					dateFormat(startDate));
+			ActionContext.getContext()
+					.put("endDateString", dateFormat(endDate));
+
+		}
+	}
+
+	/**
+	 * date format
+	 */
+
+	private String dateFormat(Date date) {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		if (date == null)
+			return "";
+		return format.format(date);
+	}
+
+	private Date dateFormat(String date) {
+		DateFormat convert = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			return convert.parse(date);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	/**
+	 * 列出所有资助文件
+	 */
+	public String listAidPolicyFiles() {
+		String dirPath = "/upload/aidpolicy";
+		String realDirPath = ServletActionContext.getServletContext()
+				.getRealPath(dirPath);
+		Map<String, String> files = FileTool.mapFiles(realDirPath, dirPath);
+
+		ActionContext.getContext().put("files", files);
+		return "aidPolicyFiles";
+	}
+
+	public String delAidPolicyfile() {
+		String realPath = ServletActionContext.getServletContext().getRealPath(
+				aidpolicyfilepath);
+		File file = new File(realPath);
+
+		if (file.isFile() && file.exists()) {
+			file.delete();
+		}
+
+		ActionContext.getContext().put("message", "资助政策文件删除成功");
+		ActionContext.getContext().put("urladdress",
+				"/control/patent/listAidPolicyFiles");
+		return "message";
+	}
+
+	// 操作日志列表
+	public String systemOperationAudit() {
+
+		StringBuffer where = new StringBuffer();
+		List<Object> parameters = new ArrayList<Object>();
+
+		where.append("1=1");
+		if (auditRecord != null) {
+
+			if (auditRecord.getAuditorUserName() != null
+					&& !"".equals(auditRecord.getAuditorUserName())) {
+				where.append(" and o.auditorUserName=?"
+						+ (parameters.size() + 1));
+				parameters.add(auditRecord.getAuditorUserName());
+			}
+			if (this.startDate == null && this.endDate != null) {
+				where.append(" and o.auditTime<=?" + (parameters.size() + 1));
+				parameters.add(this.endDate);
+
+			} else if (this.startDate != null && this.endDate == null) {
+				where.append(" and o.auditTime>=?" + (parameters.size() + 1));
+				parameters.add(this.startDate);
+			} else if (this.startDate != null && this.endDate != null) {
+				where.append(" and o.auditTime>=?" + (parameters.size() + 1));
+				parameters.add(this.startDate);
+				where.append(" and o.auditTime<=?" + (parameters.size() + 1));
+				parameters.add(this.endDate);
+			}
+			if (auditRecord.getAuditType() != null
+					&& !"".equals(auditRecord.getAuditType())) {
+				where.append(" and o.auditType=?" + (parameters.size() + 1));
+				parameters.add(auditRecord.getAuditType());
+			}
+
+		}
+		PageView<AuditRecord> pageView = new PageView<AuditRecord>(20, page);
+		int firstindex = (pageView.getCurrentpage() - 1)
+				* pageView.getMaxresult();
+		LinkedHashMap<String, String> order = new LinkedHashMap<String, String>();
+		order.put("auditTime", "desc");
+		QueryResult<AuditRecord> qr = auditRecordService.getScrollData(
+				firstindex, pageView.getMaxresult(), where.toString(),
+				parameters.toArray(), order);
+		pageView.setRecords(qr.getResultlist());
+		pageView.setTotalrecords((int) qr.getTotalrecord());
+		ActionContext.getContext().put("pageView", pageView);
+		ActionContext.getContext()
+				.put("startDateString", dateFormat(startDate));
+		ActionContext.getContext().put("endDateString", dateFormat(endDate));
+
+		return "systemOperationAudit";
+	}
+
+	/**
+	 * 查询专利细节，并根据专利类型导向不同视图
+	 */
+	public String patentDetail() {
+		Map<String, String> IPCType = ConfigTool.getIPCType();// 获取IPC分类号
+		TableType tableType1 = null;
+		tableType1 = tableTypeService.find(tableType.getId());
+		User patentuser = tableType1.getUser();
+		ActionContext.getContext().put("patent", tableType1);
+		ActionContext.getContext().put("patentuser", patentuser);
+		ActionContext.getContext().put("IPCType", IPCType);
+
+		// 由专利类型决定跳转视图
+		return "detail" + tableType1.getPatentType();
+	}
+
+}

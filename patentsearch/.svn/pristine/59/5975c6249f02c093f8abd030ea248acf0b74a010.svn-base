@@ -1,0 +1,388 @@
+﻿body
+{
+    /*text-align: center;*/
+    color: #333333;
+    font-size: 14px;
+    line-height: 150%;
+    background-color: #FEFEFE;
+    background-image: url(../../images/index/bgbody.jpg);
+    background-repeat: repeat-x;
+    background-position: center top;
+    margin: 0 auto;
+    width: 1000px;
+}
+
+.topbodey
+{
+    background-color: #00276A;
+}
+
+.baneer
+{
+    background-image: url('../../images/index/banner_bjindex.png');
+    background-repeat: no-repeat;
+    width: 1000px;
+    height: 160px;
+}
+.Center
+{
+    /*background-image: url('../../images/bg.png');
+    background-repeat: repeat;*/
+    background-color: #D4EAFD;
+    height: 555px;
+    width: 1000px;
+}
+.Conntent
+{
+    padding-top: 80px;
+    height: 200px;
+}
+
+.ConntentLogin
+{
+    padding-top: 80px;
+    height: 450px;
+}
+.ConntentRegInfo
+{        
+    width: 900px;
+    /*height:500px;*/
+    overflow:auto;
+    margin: 0px auto 0 auto;
+    border-width: 1px;
+    border-color: #7BBEE7;
+    background-color: White;
+    border-style: ridge;
+}
+
+.Smartfoot
+{
+    text-align: center;
+    width: 100%; /*position: absolute;*/ /*absolute; relative*/
+    background: url(../../images/boot_bj.jpg) repeat-x;
+}
+.Smartfoot span
+{
+    line-height: 30px;
+}
+
+#Smartnavbom
+{
+    height: 200px;
+    text-align: center;
+}
+#Smartnavbom ul
+{
+    /*float:inherit;*/
+    padding: 0px 0px 0px 50px;
+    margin-bottom: 0px;
+    height: 90px;
+}
+#Smartnavbom ul li
+{
+    float: left;
+    text-align: center;
+    width: 110px;
+    margin: 0px 20px 0px 20px;
+}
+#Smartnavbom ul li img
+{
+    width: 88px;
+    height: 88px;
+    margin-bottom: 10px;
+}
+#Smartnavbom ul li a
+{
+    /*float: left;*/
+    font: 14px/30px "宋体";
+    /*font-weight: bold;*/
+    color: #002863;
+}
+
+/*----smart-----------*/
+
+a
+{
+    color: #555555;
+    text-decoration: none;
+}
+img
+{
+    border-style: none;
+    vertical-align: top;
+}
+
+.SearchLeftPad
+{
+    padding-left: 70px;
+}
+#BtnUl ul li
+{
+    float: left;
+    width: 148px; /*margin: 0px 8px 0px 8px;*/
+    height: 30px; /*list-style-type: none; padding-bottom:15px;*/
+}
+
+#BtnUl ul li a
+{
+    width: 148px; /*margin: 0px 8px 0px 8px;*/
+    height: 30px; /*list-style-type: none; padding-bottom:15px;*/
+    text-align: center;
+    padding-top: 5px;
+    background-repeat: no-repeat;
+    color: #E7E3EF;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.simpleSearchTxb
+{
+    border: 1px solid #666699;
+    padding: 5px 5px 0px 5px;
+    width: 790px;
+    height: 70px; /*color:#333333;*/
+    font-size: 16px; /*line-height:20px;*/ /*background-image:url("../../images/bgmiddletextbox.png");*/
+}
+/*原页面样式*/
+.btnPatentCn
+{
+    position: relative;
+    display: block;
+    background-image: url("../../images/index/active_bj.png");
+    cursor: pointer;
+}
+.btnPatentCn span.hover
+{
+    position: absolute;
+    display: block;
+    height: 30px; /*background-image:url("../../images/btnpatentcnoff.png");*/
+}
+.btnPatentCnOff
+{
+    position: relative;
+    display: block;
+    height: 30px;
+    background-image: url("../../images/index/enable_bj.png");
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+.btnPatentCnOff span.hover
+{
+    position: absolute;
+    display: block;
+    height: 30px;
+    background-image: url("../../images/index/enable_bj.png");
+    background-repeat: no-repeat;
+}
+.btnPatentEn
+{
+    position: relative;
+    display: block;
+    height: 30px;
+    background-image: url("../../images/index/active_bj.png");
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+.btnPatentEn span.hover
+{
+    position: absolute;
+    display: block;
+    height: 30px; /*background-image:url("../../images/btnpatentenoff.png");*/
+    background-repeat: no-repeat;
+}
+.btnPatentEnOff
+{
+    position: relative;
+    display: block;
+    height: 30px;
+    background-image: url("../../images/index/enable_bj.png");
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+.btnPatentEnOff span.hover
+{
+    position: absolute;
+    display: block;
+    height: 30px;
+    background-image: url("../../images/index/active_bj.png");
+    background-repeat: no-repeat;
+}
+.btnQuery_11
+{
+    position: relative;
+    display: block;
+    text-indent: -9999px;
+    background-image: url("../../images/index/smartquery.png");
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+.btnQuery_11 span.hover
+{
+    position: absolute;
+    display: block;
+    width: 97px;
+    text-indent: -9999px;
+    background-image: url("../../images/index/btnqueryhover.png");
+    background-repeat: no-repeat;
+}
+.btnActive
+{
+    background-image: url("../../images/index/active_bj.png");
+}
+.btnInactive
+{
+    background-image: url("../../images/index/enable_bj.png");
+}
+
+#alert
+{
+    height: 330px;
+    filter: alpha(opacity=100); /* IE */
+    -moz-opacity: 1.0; /* Moz + FF */
+    opacity: 0.5;
+    z-index: 100;
+    background-color: #ffffff;
+}
+
+/*frmLogin.aspx*..../..////*/
+
+a
+{
+    text-decoration: none;
+    color: #000;
+}
+a:hover
+{
+    color: #760000;
+    text-decoration: underline;
+}
+a
+{
+    blr: expression(this.onFocus=this.blur()); /* IE Opera */
+    outline: none; /* FF Opera */
+}
+a:focus
+{
+    -moz-outline-style: none; /* FF */
+}
+
+.dl
+{
+    width: 771px;
+    height: 382px;
+    margin: 40px auto 0 auto;
+    border-width: 1px;
+    border-color: #7BBEE7;
+    background-color: White;
+    border-style: ridge;
+}
+.dltitle
+{
+    height: 37px;
+    overflow: hidden;
+    line-height: 37px;
+    background: url(../../images/d01.jpg) repeat-x top;
+}
+.dltitle span
+{
+    display: block;
+    background: url(../../images/d02.jpg) no-repeat left top;
+    height: 37px;
+    font-size: 14px;
+    padding-left: 20px;
+}
+.dltitle a
+{
+    float: right;
+    margin-top: -37px;
+    background: url(../../images/d03.jpg) no-repeat right top;
+    height: 27px;
+    padding: 10px 13px 0px 0px;
+}
+
+.dlcn
+{
+    height: 345px;
+    background: url(../../images/d05.jpg) no-repeat left top;
+}
+.dllf
+{
+    float: left;
+    padding: 20px 0px 0px 50px;
+    width: 350px;
+    /*background-image: url('../../images/dl.jpg');*/
+}
+.dllf li
+{
+    width: 330px;
+    float: left;
+    padding: 5px 0px;
+}
+.dllf li strong, .dlrt li strong
+{
+    display: block;
+    font-size: 15px;
+    font-weight: bold;
+}
+.dllf li span
+{
+    float: left;
+    padding: 5px 0px 0px 33px;
+    width: 60px;
+    text-align:right;
+}
+.dlsr
+{
+    float: left;
+    padding-left: 7px;
+    background: url(../../images/d09.jpg) no-repeat left top;
+}
+.dlsr b
+{
+    display: block;
+    height: 17px;
+    background: url(../../images/d10.jpg) no-repeat right top;
+    width: 200px;
+    padding: 3px 6px 2px 0px;
+}
+.dlsr input
+{
+    border-style: solid;
+    border-color: inherit;
+    border-width: 1px;
+    font-size: 12px;
+    color: #999;
+    width: 200px;
+    height: 20px;
+}
+.xdl
+{
+    padding: 0px 0px 0px 80px;
+}
+.dlbut
+{
+    padding: 0px 0px 0px 95px;
+}
+
+.xdl b
+{
+    float: left;
+    padding-right: 10px;
+}
+
+.dlrt
+{
+    float: right;
+    width: 250px;
+    padding: 20px 77px 0px 0px;
+    
+}
+.dlrt li
+{
+    width: 250px;
+    padding: 5px 0px;
+}
+.dlrt p
+{
+    line-height: 20px;
+}

@@ -1,0 +1,12 @@
+#Wed Dec 17 09:21:29 CST 2014
+eclipse.preferences.version=1
+encoding//src/patentsearch/bean/user/AnalysisBean.java=UTF-8
+encoding//src/patentsearch/bean/user/SearchFormula.java=UTF-8
+encoding//src/patentsearch/bean/user/Users.java=UTF-8
+encoding//src/patentsearch/service/user/SearchFormulaService.java=UTF-8
+encoding//src/patentsearch/service/user/UserService.java=UTF-8
+encoding//src/patentsearch/service/user/impl/SearchFormulaServiceImpl.java=UTF-8
+encoding//src/patentsearch/service/user/impl/UserServiceImpl.java=UTF-8
+encoding//src/patentsearch/web/action/front/user/SearchFormulaAction.java=UTF-8
+encoding//src/patentsearch/web/action/front/user/UserAction.java=UTF-8
+encoding/<project>=UTF-8

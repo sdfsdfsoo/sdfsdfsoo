@@ -1,0 +1,133 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>用户登录</title>
+		<link href="/js/easyui/themes/icon.css" rel="stylesheet"
+			type="text/css" />
+		<link href="/js/easyui/themes/default/easyui.css" rel="stylesheet"
+			type="text/css" />
+		<link href="/css/index.css" rel="stylesheet" type="text/css" />
+		<link href="/css/login/login.css" rel="stylesheet" type="text/css" />
+		<script src="/js/jquery-1.8.0.min.js" type="text/javascript"></script>
+		<script src="/js/easyui/jquery.easyui.min.js"></script>
+		<script src="/js/easyui/locale/easyui-lang-zh_CN.js"></script>
+		<style>
+		.imgGray {
+			filter: gray;
+			filter: grayscale(1);
+			-webkit-filter: grayscale(1);
+		}
+		</style>
+		<script type="text/javascript">
+	function formSubmit() {
+		document.getElementById('loginForm').submit();
+	}
+	function gotoregister() {
+			window.location.href = '/front/user/user_registerUI';
+	}
+	function getCheckCode(imgObj) {
+		imgObj.src = "/front/user/front/user_generateCheckCode?" + Math.random();
+	}
+	function reloadCheckCode() {
+		document.getElementById("checkCodePicture").src = "/front/user/front/user_generateCheckCode?"
+				+ Math.random();
+	}
+</script>
+	</head>
+	<body>
+		<div style="width: 1000px; margin: 0 auto;">
+			<%@include file="/WEB-INF/page/front/share/help.jsp"%>
+			<%@include file="/WEB-INF/page/front/share/top.jsp"%>
+			<div id="mid" class="base">
+				<div id="divConntent" class="ConntentLogin"
+					style="padding-top: 10px;">
+					<div class="dl">
+						<div class="dltitle">
+						</div>
+						<div class="dlcn">
+							<form id="loginForm" action="/front/user/front/user_check"
+								method="post">
+								<ul class="dllf">
+									<li>
+										<strong>&nbsp;&nbsp; 会员登录</strong>
+									</li>
+									<li>
+										<span>用户名：</span>
+										<div class="dlsr">
+											<b> <input name="user.username" type="text"
+													id="TextBoxAccount" /> </b>
+										</div>
+									</li>
+									<li>
+										<span>密 码：</span>
+										<div class="dlsr">
+											<b> <input name="user.password" type="password"
+													id="Password" /> </b>
+										</div>
+									</li>
+									<li>
+										<span>验证码：</span>
+										<div   class="dlsr">
+
+											<b><input name="checkCode" type="text" id="checkCode" width="20px"
+												  alt="看不清，换一张" title="看不清，换一张" /></b>
+
+											
+
+										</div>
+									</li>
+									<li>
+										<div class="xdl">
+										&nbsp;&nbsp;<img id="checkCodePicture" src="front/user_generateCheckCode"
+												onclick=getCheckCode(this);; alt="看不清，换一张" title="看不清，换一张"
+												border="0"
+												  />
+											&nbsp;&nbsp;<a id="icodems" onclick=reloadCheckCode()>看不清换一张</a>
+										</div>
+									</li>
+									<li>
+										<div class="dlbut">
+											<input type="image" name=""
+												id="ImageButtonLogin" src="/images/login/denglu_bj.png"
+												style="border-width: 0px;" onclick="formSubmit();" />
+												 <img   src="/images/login/regedit.png"
+												onclick="gotoregister()"  title="zhuce"
+												border="0"
+												  /> 
+											<!-- <input type="image" 
+												src="/images/login/regedit.png" style="border-width: 0px;" onclick="gotoregister();"/> -->
+										</div>
+									</li>
+								</ul>
+							</form>
+							  <!-- 
+							<ul class="dlrt">
+								<li>
+									<strong>还没账户？</strong>
+								</li>
+								<li>
+									<a href="#" onclick="window.location.href='/front/user/user_registerUI'";
+> <img
+											src="/images/login/zhuce_bj.png" alt="立即注册">
+									</a>
+								</li>
+								<li>
+									<p>
+										成为注册用户，您可以使用到更多功能！如您已拥有帐户，可以在左侧登录。
+									</p>
+								</li>
+							</ul>-->
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+			<%@include file="/WEB-INF/page/front/share/footer.jsp"%>
+		</div>
+	</body>
+</html>

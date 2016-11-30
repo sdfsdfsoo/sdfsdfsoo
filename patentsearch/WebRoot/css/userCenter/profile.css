@@ -1,0 +1,56 @@
+dl{
+margin: 20px 0px 0px 10px;
+padding: 0px;
+}
+dl dt{
+margin: 0px 0px 0px 0px;
+padding: 0px;
+text-align: right;
+width: 135px;
+clear: both;
+float: left;
+line-height: 42px;
+color: #6E6E6E;
+font-size: 16px
+}
+dl dd{
+font-size: 16px;
+line-height: 42px;
+padding: 5px 0px;
+}
+.textBox{
+border: 1px solid #C6CBDE;
+width: 292px;
+height: 32px;
+color: #6E6E6E;
+font-size: 14px;
+line-height: 20px;
+padding: 5px;
+}
+body{
+	background-color: #fff;
+}
+.btn{
+	position: relative;
+display: inline-block;
+width: 75px;
+height: 28px;
+/* color: #2A2A2A; */
+/* font-size: 16px; */
+/* font-family: Microsoft YaHei; */
+line-height: 28px;
+text-align: center;
+background-image: url('../../images/userCenter/huiseanniu.png');
+/* background-repeat: no-repeat; */
+cursor: pointer;
+z-index: 1;
+vertical-align: middle;
+/* top: -7px; */
+/* left: -105px; */
+/* right: 200px;
+}
+
+a {
+color: #154c94;
+text-decoration: none;
+}

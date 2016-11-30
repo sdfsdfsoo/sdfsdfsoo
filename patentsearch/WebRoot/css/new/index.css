@@ -1,0 +1,38 @@
+html{ width:100%; height:100%;}
+body{ background:url(../../images/new/bg.jpg); background-size:100% 100%; margin:0 auto; text-align:center; font-family:"宋体"; color:#666; font-size:14px;}
+div{ margin:0 auto; padding:0px;}
+ul,li,dl,dt,dd{ margin:0px; padding:0px;}
+.logo{ margin-top:100px;}
+.login_box{ width:680px;height:61px; background:url(../../images/new/login_box.png); margin-top:10px; padding-left:20px; padding-top:130px;}
+.login_box li{ float:left; list-style:none;}
+.login_box #TextBoxAccount{ width:105px; height:33px; line-height:33px; border:#a5b0b6 solid 1px; background-repeat:no-repeat;background-position:left;background-color:#FFF; padding-left:10px;}
+.login_box #Password{ width:105px; height:33px; line-height:33px; border:#a5b0b6 solid 1px; background-repeat:no-repeat; background-position:left; background-color:#FFF; padding-left:10px;}
+.login_box .code{ float:left; background:#d8e2f4; height:35px; line-height:35px;border-top:#a5b0b6 solid 1px;border-bottom:#a5b0b6 solid 1px; padding-left:5px; padding-right:5px;}
+.login_box .code img{ border:#a5b0b6 solid 1px; height:25px; margin-top:4px; float:left; margin-right:5px;}
+.login_box .code input{ width:80px; height:23px; line-height:23px;border:#a5b0b6 solid 1px;}
+.foot{ margin-top:20px; color:#FFF; font-size:12px; line-height:30px;}
+.top{ line-height:40px;height:40px; background:#FFF; text-align:right; padding-right:20px; font-size:12px;}
+.top a{ color:#666; text-decoration:underline; font-weight:bold;}
+.SearchLeftPad{ width:600px;}
+#BtnUl li{ float:left;list-style:none; width:104px; height:33px; line-height:33px;}
+.btnPatentCn{ background:url(../../images/new/data1.png); display:block;cursor:pointer;}
+.btnPatentCnOff{ background:url(../../images/new/data2.png); color:#FFF; display:block;cursor:pointer;}
+.btnPatentEn{ background:url(../../images/new/data1.png); display:block;cursor:pointer;}
+.btnPatentEnOff{ background:url(../../images/new/data2.png); color:#FFF; display:block;cursor:pointer;}
+#divText{ width:100%; float:left; text-align:left;}
+.simpleSearchTxb{float:left;height:70px; width:490px; background:#FFF; border:0px; margin:0px; padding:0px; text-align:left;resize:none;}
+#BtnSearch{ float:left;}
+.win{ width:100%;clear:both; overflow:hidden; margin-top:20px;}
+.win ul{ width:100%; clear:both;}
+.win li{ list-style:none; float:left;height:100px; margin-right:5px; margin-top:5px; line-height:160px; overflow:hidden;}
+.win a{ color:#FFF; text-decoration:none;}
+#win1 a{ width:100px;background:url(../../images/new/win1_1.png) no-repeat; display:block;}
+#win1 a:hover{ width:100px; background:url(../../images/new/win1_2.png) no-repeat; display:block;}
+#win2 a{ width:100px;background:url(../../images/new/win2_1.png) no-repeat; display:block;}
+#win2 a:hover{ width:100px; background:url(../../images/new/win2_2.png) no-repeat; display:block;}
+#win3 a{ width:100px;background:url(../../images/new/win3_1.png) no-repeat; display:block;}
+#win3 a:hover{ width:100px; background:url(../../images/new/win3_2.png) no-repeat; display:block;}
+#win4 a{ width:205px;background:url(../../images/new/win4_1.png) no-repeat; display:block;}
+#win4 a:hover{ width:205px; background:url(../../images/new/win4_2.png) no-repeat; display:block;}
+#win5 a{ width:100px;background:url(../../images/new/win5_1.png) no-repeat; display:block;}
+#win5 a:hover{ width:100px; background:url(../../images/new/win5_2.png) no-repeat; display:block;}

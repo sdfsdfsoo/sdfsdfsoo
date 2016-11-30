@@ -1,0 +1,70 @@
+<%@ page language="java" pageEncoding="UTF-8"%>
+<style>
+		.imgGray {
+			filter: gray;
+			filter: grayscale(1);
+			-webkit-filter: grayscale(1);
+		}
+		</style>
+
+<div id="top">
+	<div id="navtop">
+		<ul>
+
+			<li>
+				<!--<a href="#" target=""> 
+				<img src="/images/small2-1_bj.jpg" onmouseover="this.src='/images/small2-2_bj.jpg'" onmouseout="this.src='/images/small2-1_bj.jpg'" /> <br /> 专利分析 -->
+				<img src="/images/small2-1_bj.jpg"  class="imgGray"/> <br /> 专利分析 
+				<!--</a>-->
+			</li>
+
+			<li>
+				<!--<a href="#" target="">
+				<img src="/images/small3-1_bj.jpg" onmouseover="this.src='/images/small3-2_bj.jpg'" onmouseout="this.src='/images/small3-1_bj.jpg'" /> <br /> 行业数据库 -->
+				<img src="/images/small3-1_bj.jpg"  class="imgGray"/> <br /> 行业数据库
+				<!--</a>-->
+			</li>
+			<li>
+				<a href="/front/user/user_profileUI" target=""> 
+				<img src="/images/small4-1_bj.jpg" onmouseover="this.src='/images/small4-2_bj.jpg'" onmouseout="this.src='/images/small4-1_bj.jpg'" /> <br /> 企业个性库
+				</a>
+			</li>
+			<li>
+				<!--<a href="#" target=""> 
+				<img src="/images/small5-1_bj.jpg" onmouseover="this.src='/images/small5-2_bj.jpg'" onmouseout="this.src='/images/small5-1_bj.jpg'" /> <br /> 在线翻译 -->
+				<img src="/images/small5-1_bj.jpg"  class="imgGray"/> <br /> 在线翻译 
+				<!--</a>-->
+			</li>
+			<li>
+				<a target="_blank" href="/help/畅远专利检索分析系统操作手册.pdf" target=""> 
+				<img src="/images/small6-1_bj.jpg" onmouseover="this.src='/images/small6-2_bj.jpg'" onmouseout="this.src='/images/small6-1_bj.jpg'" /> <br /> 在线帮助 
+				</a>
+			</li>
+
+		</ul>
+
+	</div>
+	<div id="navbom">
+		<ul>
+
+
+			<li>
+				<a href="/front/search/table_smartSearchUI" target="">一般检索</a>
+			</li>
+
+			<li>
+				<a href="/front/search/table_tableSearchUI" target="">高级检索</a>
+			</li>
+
+			<li>
+				<a href="/front/search/table_expertSearchUI" target="">算式检索</a>
+			</li>
+			<li>
+				<a href="/front/user/ipc_classNav" target="">分类检索</a>
+			</li>
+			<li>
+				<a href="/front/search/legal_legalStatusSearchUI" target="">中国法律状态检索</a>
+			</li>
+		</ul>
+	</div>
+</div>

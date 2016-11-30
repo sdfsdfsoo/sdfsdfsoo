@@ -1,0 +1,24 @@
+.div_Content_xiwl {
+	border: 1px solid #ccd;
+	border-radius: 5px;
+	margin: 0px 4px 5px 4px;
+	-moz-border-radius: 5px;
+}
+
+.buttoncss {
+	background: url(../../images/law/bt.jpg) repeat-x;
+	width: 112px;
+	height: 31px;
+	border: 0px solid #4aa2ef;
+}
+h2 {
+font-size: 18px;
+font-family: Microsoft YaHei;
+line-height: 150%;
+text-align: center;
+padding: 0px;
+margin: 0px;
+}
+.ui-datepicker select.ui-datepicker-month, .ui-datepicker select.ui-datepicker-year {
+    width: 30%;
+}

@@ -1,0 +1,13 @@
+package patentsearch.service.user;
+
+import patentsearch.bean.user.PatentCategory;
+import patentsearch.bean.user.PatentStoreInfo;
+import patentsearch.bean.user.Users;
+import patentsearch.service.base.DAO;
+
+ 
+
+
+public interface PatentStoreInfoService extends DAO<PatentStoreInfo> {
+	
+}

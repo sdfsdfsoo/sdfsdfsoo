@@ -1,0 +1,12 @@
+package patentsearch.service.user.impl;
+import org.springframework.stereotype.Service;
+
+import patentsearch.bean.user.PatentCategory;
+import patentsearch.bean.user.PatentStoreInfo;
+import patentsearch.service.base.impl.DaoSupport;
+import patentsearch.service.user.CategoryService;
+@Service
+public class CategoryServiceImpl extends DaoSupport<PatentCategory> implements  CategoryService {
+
+	
+}

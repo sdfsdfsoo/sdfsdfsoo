@@ -1,0 +1,95 @@
+package junit.test;
+
+
+
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import patentsearch.service.patent.SearchService;
+
+
+
+public class UserTest {
+	private static  ApplicationContext act ;  
+	 @BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+		  act =  new ClassPathXmlApplicationContext("beans.xml");
+		 
+		 
+	} 
+	/*
+	@Test
+	public void test1(){
+		  LegalStatusService legalStatusService  =(LegalStatusService) act.getBean("legalStatusServiceImpl");;
+		 System.out.println(legalStatusService.getCnLegalStatusByAppnp("882004115"));
+		
+	}
+	 
+	@Test
+	public void test2() throws Exception{
+		 // ProvinceCityService provinceCityService  =(ProvinceCityService) act.getBean("provinceCityServiceImpl");;
+		 //System.out.println(provinceCityService.detailInfo(provinceCityService.getScrollData().getResultlist(),"34"));
+		 try {
+	           
+			 URL url=new URL("http://11.0.0.26:8090/Figure_S/2013/20098/201320098254.gif"); //将此处换成要测试是否连通的地址       
+	            HttpURLConnection   httpConnection   =   (HttpURLConnection)url.openConnection(); 
+	             
+	            int   responseCode=httpConnection.getResponseCode(); 
+	            System.out.println(responseCode);
+	            if(responseCode==200) {//如果响应码为200说明此地址是通的，则跳到该地址，
+	            	System.out.println("http://11.0.0.26:8090/Figure_S/2013/30106/201330106569.gif"); 
+	            }else{//否则跳到另外的地址
+	            	 System.out.println("201330106569.gif file not exit");
+	            }          
+	        } catch (MalformedURLException e) {           
+	            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+	        } catch (IOException e) {
+	           
+	            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+	        }
+		 
+		 
+		
+	}
+	@Test
+	public void test3() throws Exception{
+		  ProvinceCityService provinceCityService  =(ProvinceCityService) act.getBean("provinceCityServiceImpl");;
+		 System.out.println(provinceCityService.getCoListByTerm("国"));
+		 
+		
+	}*/
+	
+	/*@Test
+	public void test4() throws Exception{
+		LegalStatusListService legalStatusListService  =(LegalStatusListService) act.getBean("legalStatusListServiceImpl");;
+		List<LegalStatusDetail> childList=legalStatusListService. getLegalStatusChildList("专利权的无效宣告");
+		 System.out.println(childList);
+		 StringBuilder inSet=new StringBuilder("(");
+		 for(int i=0;i<childList.size();i++){
+			 inSet.append("'"+childList.get(i).getLegalStatusInfo()+"',");
+		 }
+		 inSet.deleteCharAt(inSet.length()-1);
+		 inSet.append(")");
+		 
+		 System.out.println(inSet);
+		 
+	}*/
+	 @Test
+	public void test5() throws Exception{
+		SearchService searchService  =(SearchService) act.getBean("searchServiceImpl");
+		List<String> appnoList=new ArrayList<String>();
+		appnoList.add("200980114629");
+		appnoList.add("200880128642");
+		appnoList.add("201010275089");
+		 System.out.println(searchService.getPatentItemList(appnoList));
+		
+		 
+	} 
+
+}

@@ -1,0 +1,178 @@
+package patentsearch.service.legalstatus.impl;
+
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.Query;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import patentsearch.bean.base.LegalStatusDetail;
+import patentsearch.bean.cndescriptionitem.CnLegalStatus;
+import patentsearch.bean.util.xml.XMLUtil;
+import patentsearch.service.base.impl.DaoSupport;
+import patentsearch.service.legalstatus.LegalStatusService;
+
+@Service
+public class LegalStatusServiceImpl extends DaoSupport<CnLegalStatus> implements
+		LegalStatusService {
+	/**
+	 * 根据中国专利申请号来查询法律状态信息
+	 * 一个专利申请号对应多个法律状态信息
+	 */
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly = true, propagation = Propagation.NOT_SUPPORTED)
+	public List<CnLegalStatus> getCnLegalStatusByAppnp(String appno) {
+		List<CnLegalStatus> resultList=new ArrayList<CnLegalStatus>();
+			Query query = em
+					.createNativeQuery
+					("SELECT ID,JUANQI,PatentType,LegalDate ,LegalStatus ,LegalStatusInfo,LegalCode ,VOL,NUM,PAG,IPC,SHENQINGH,SHENQINGR ,SHENQINGGBR ,SHOUQUANGGR ,WUXIAOXGJDH"+
+     " ,WUXIAOXGJDR,ZHONGZHIR ,FANGQISXR ,YUANMINGC,YUANGONGGR  ,BIANGENGSXCODE ,BIANGENGSX ,BIANGENGQ ,BIANGENGH ,DENGJISXR,HETONGBAH ,RANGYUR,SHOURANGR"+
+     " ,ZHUANLIMC ,XUKEZL,BEIANRQ ,BIANGENGR,JIECHUR  ,DENGJIH ,CHUZHIR ,ZHIQUANR  ,SHOUJIANR ,WENJIANMC ,ImportData FROM  CnLegalStatus where SHENQINGH=?1");
+			query.setParameter(1, appno);
+			List<Object[]> list=query.getResultList();
+			if(list!=null&&list.size()>0){
+				    for(int i=0;i<list.size();i++){
+					Object[] objs = (Object[]) list.get(i);
+					CnLegalStatus cnLegalStatus = new CnLegalStatus();
+					cnLegalStatus.setId((BigInteger) objs[0]);
+					cnLegalStatus.setJuanQi((String) objs[1]);cnLegalStatus.setPatentType((String) objs[2]);
+					cnLegalStatus.setLegalDate((String) objs[3]);cnLegalStatus.setLegalStatus((String) objs[4]);cnLegalStatus.setLegalStatusInfo((String) objs[5]);
+					cnLegalStatus.setLegalCode((String) objs[6]);cnLegalStatus.setVol((String) objs[7]);cnLegalStatus.setNum((String) objs[8]);
+					cnLegalStatus.setPag((String) objs[9]);cnLegalStatus.setIpc((String) objs[10]);cnLegalStatus.setShenQingH((String) objs[11]);
+					cnLegalStatus.setShenQingR((String) objs[12]);cnLegalStatus.setShenQingGbr((String) objs[13]);cnLegalStatus.setShouquanGgr((String) objs[14]);
+					cnLegalStatus.setWuXiaoXgjdh((String) objs[15]);cnLegalStatus.setWuXiaoXgjdr((String) objs[16]);cnLegalStatus.setZhongZhiR((String) objs[17]);
+					cnLegalStatus.setFangQiSxr((String) objs[18]);cnLegalStatus.setYuanMingC((String) objs[19]);cnLegalStatus.setYuanGongGr((String) objs[20]);
+					cnLegalStatus.setBianGengSxCode((String) objs[21]);cnLegalStatus.setBianGengSx((String) objs[22]);cnLegalStatus.setBianGengQ((String) objs[23]);
+					cnLegalStatus.setBianGengH((String) objs[24]);cnLegalStatus.setDengJiSxr((String) objs[25]);cnLegalStatus.setHeTongBah((String) objs[26]);
+					cnLegalStatus.setRangYuR((String) objs[27]);cnLegalStatus.setShouRangR((String) objs[28]);cnLegalStatus.setZhuanLiMc((String) objs[29]);
+					cnLegalStatus.setXuKeZl((String) objs[30]);cnLegalStatus.setBeiAnRq((String) objs[31]);cnLegalStatus.setBianGengR((String) objs[32]);
+					cnLegalStatus.setJieChuR((String) objs[33]);cnLegalStatus.setDengJiH((String) objs[34]);cnLegalStatus.setChuZhiR((String) objs[35]);
+					cnLegalStatus.setZhiQuanR((String) objs[36]);cnLegalStatus.setShouJianR((String) objs[37]);cnLegalStatus.setWenJianMc((String) objs[38]);
+					cnLegalStatus.setImportData((Date) objs[39]);
+					resultList.add(cnLegalStatus);
+				    }
+				return  resultList;
+			}
+		return null;
+	}
+/*
+ * 每一个申请号都查数据库，此时会影响性能
+ */
+
+	public List<LegalStatusDetail> getLegalStatusDetail(String appno) {
+		List<LegalStatusDetail> resultList=new ArrayList<LegalStatusDetail>();
+		appno=XMLUtil.getCheckAppnoWithOutDot(appno);
+		Query query = em
+				.createNativeQuery
+				("SELECT TOP 10  SHENQINGH,LegalCode,category,comment ,legalStatus ,legalStatusInfo FROM  LegalStatusDetailView where SHENQINGH=?1 order by legalDate desc");
+		query.setParameter(1, appno);
+		List<Object[]> list=query.getResultList();
+		if(list!=null&&list.size()>0){
+			    for(int i=0;i<list.size();i++){
+					Object[] objs = (Object[]) list.get(i);
+					LegalStatusDetail entity = new LegalStatusDetail();
+					entity.setAppno((String) objs[0]);
+					entity.setCode((String) objs[1]);
+					entity.setCategory((String) objs[2]);
+					entity.setComment((String) objs[3]);
+					entity.setLegalStatus((String) objs[4]);
+					entity.setLegalStatusInfo((String) objs[5]);
+					resultList.add(entity);
+			    }
+			    //System.out.println(appno+"法律状态信息："+resultList);
+			return  resultList;
+		}
+	return null;
+	}
+	
+	public String getLegalStatusDetailSigle(String appno) {
+		List<LegalStatusDetail> resultList=new ArrayList<LegalStatusDetail>();
+		appno=XMLUtil.getCheckAppnoWithOutDot(appno);
+		Query query = em
+				.createNativeQuery
+				("SELECT  LegalCode FROM  CnLegalStatus_basic where SHENQINGH=?1");
+		query.setParameter(1, appno);
+		String legalcode="";
+		try{
+			legalcode=(String)query.getSingleResult();
+		}
+		catch(Exception e){
+			return legalcode;
+		}
+		
+	return legalcode;
+	}
+	/*
+	 * 每一个申请号查数据库，获得专利法律状态时间（公开）
+	 */
+
+		public String getLegalDateByAppno(String appno) {
+//			appno=XMLUtil.getCheckAppnoWithOutDot(appno);
+			Query query = em
+					.createNativeQuery
+					("SELECT TOP 1 LegalDate FROM  publicLegalStatus where SHENQINGH=?1");
+			query.setParameter(1, appno);
+			List<String> list=query.getResultList();
+			if(list!=null&&list.size()>0){
+				    String legalDate = (String) list.get(0);
+					 legalDate=  legalDate.substring(0, 4);
+				return  legalDate;
+			}
+		return null;
+		}
+		/*
+		 * 每一个申请号查数据库，获得专利法律状态时间（授权）
+		 */
+
+			public String getAccreditLegalDateByAppno(String appno) {
+//				appno=XMLUtil.getCheckAppnoWithOutDot(appno);
+				Query query = em
+						.createNativeQuery
+						("SELECT TOP 1 LegalDate FROM  accreditLegalStatusView where SHENQINGH=?1");
+				query.setParameter(1, appno);
+				List<String> list=query.getResultList();
+				if(list!=null&&list.size()>0){
+					    String legalDate = (String) list.get(0);
+						 legalDate=  legalDate.substring(0, 4);
+					return  legalDate;
+				}
+			return null;
+			}		
+	
+	
+	
+	public String getLegalStatusDateByAppno(String appno){
+		List<CnLegalStatus> resultList=new ArrayList<CnLegalStatus>();
+		Query query = em
+				.createNativeQuery
+				("SELECT TOP 1 LegalDate FROM  publicLegalStatus where SHENQINGH=?1");
+		query.setParameter(1, appno);
+		List<Object[]> list=query.getResultList();
+		if(list!=null&&list.size()>0){
+			Object obj = (Object) list.get(0);
+			String legalDateStr=(String) obj;
+			return  legalDateStr;
+		}
+	return null;
+	}
+
+
+	public String getLegalStatusInfoByAppno(String appno){
+		Query query = em
+				.createNativeQuery
+				("select TOP 1 LegalStatusInfo from CnLegalStatus where SHENQINGH = ?1 ORDER BY legalDate DESC;");
+		query.setParameter(1, appno);
+		List<Object[]> list=query.getResultList();
+		if(list!=null&&list.size()>0){
+			Object obj = (Object) list.get(0);
+			String legalStatusInfo=(String) obj;
+			return  legalStatusInfo;
+		}
+	return null;
+	}
+}

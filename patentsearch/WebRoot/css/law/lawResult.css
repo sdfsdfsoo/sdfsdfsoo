@@ -1,0 +1,35 @@
+.divContent {
+border: 1px solid #ccd;
+border-radius: 5px;
+margin: 0px 4px 5px 4px;
+-moz-border-radius: 5px;
+width: 970px;
+height: auto;
+margin-left: auto;
+margin-right: auto;
+position: relative;
+padding: 10px;
+overflow: hidden;
+background-color: white;
+text-align: center;
+}
+
+.gridViewItem {
+position: relative;
+padding: 5px;
+z-index: 0;
+}
+
+.title1 {
+clear: both;
+width:900;
+height: 25px;
+/* color: #FFFFFF; */
+background-color: #3B96DF;
+padding: 5px;
+}
+
+.note {
+clear: both;
+font-size: 12px;
+}

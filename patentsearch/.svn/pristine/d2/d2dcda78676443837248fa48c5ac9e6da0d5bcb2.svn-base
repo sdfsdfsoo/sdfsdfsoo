@@ -1,0 +1,374 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>分析</title>
+ <link href="/css/index.css" rel="stylesheet" type="text/css" /> 
+<link  href="/css/userCenter/userCenter.css" rel="stylesheet" type="text/css" >
+<link href="/js/easyui/themes/icon.css" rel="stylesheet" type="text/css" />
+<link href="/js/easyui/themes/default/easyui.css" rel="stylesheet" type="text/css" />
+<script src="/js/jquery-1.8.0.min.js" type="text/javascript" ></script>
+<script src="/js/easyui/jquery.easyui.min.js"></script>
+<script src="/js/easyui/locale/easyui-lang-zh_CN.js"></script>
+		<script type="text/javascript" src="/js/highcharts.js"></script>
+		<script type="text/javascript">
+		    function lawSearch(value,row,index){   //law
+			     	var searchFormula="${searchFormula}";		     	
+			     	 var rowlawName=row.lawName;
+			     	    searchFormula="F XX ("+rowlawName+"/MC)*"+searchFormula.substring(5);
+	                  var html="<a target=_blank href='/front/search/table_tableSearch?searchFormula="+searchFormula+"'>"+row.lawSum+"</a>"
+					  return html;
+               }
+             function lawFmrSearch(value,row,index){   //law发明人
+	                if(value=="0"){
+						  return value;
+					 }	  
+				     	var searchFormula="${searchFormula}";
+				     	  var rowfmr=row.fmr;   
+				     	    searchFormula="F XX ("+rowfmr+"/IN)*("+value.substring(value.indexOf("_")+1,value.length)+"/CO)*"+searchFormula.substring(5);
+		               var  html="<a target=_blank href='/front/search/table_tableSearch?searchFormula="+searchFormula+"'>"+value+"</a>"
+		                   return html;
+            }    
+$(function() {
+         $.ajax( {
+				type : "post",
+				url : '/front/search/table_getPatentSumData_law',
+				success : function(data) {
+						var data = $.parseJSON(data);
+							var highcharts =  $('#container1').highcharts({
+							  chart: {
+         						   type: 'column'
+     						   },
+						        title: {
+						            text: '',
+						            x: -20 //cente
+						        },
+						        subtitle: {
+						            text: '',
+						            x: -20
+						        },
+						        xAxis: {
+						            categories: data.categories,
+						             labels: { 
+							                rotation: -90,   //竖直放
+	                                        rotation: -45    //45度倾斜 
+								       } 
+						        },
+						      	yAxis : {
+										title : {
+											text : '件数'
+										},
+										min:0
+									},
+						        tooltip: {
+						            valueSuffix: ''
+						        },
+						        legend: {
+						            layout: 'vertical',
+						            align: 'right',
+						            verticalAlign: 'middle',
+						            borderWidth: 0
+						        },
+						        series:  data.series
+						    });
+				},
+				error : function(e) {
+					alert("远程获取数据错误");
+				}
+			});
+	 $('#dgLAW').datagrid({
+        url:'/front/search/table_getPatentSumData_dataGrid_law',
+        pagination:true,
+        checkbox:true,
+        height:930,
+        fitColumns:true,
+        multiSort:false,
+        columns:[[
+            {field:'lawName',title:'专利类型',width:9,align:'center'},
+            {field:'lawSum',title:'数量',width:9,align:'center',formatter:lawSearch},
+        ]]
+    });	
+	$('#tt').tabs({
+       border:false,
+       onSelect:function(title){
+         if(title=="法律状态发明人分析"){
+        	 $.ajax( {
+				type : "post",
+				url : '/front/search/table_getPatentSumData_lawFMR',
+				success : function(data) {
+				var data = $.parseJSON(data);
+					var highcharts =  $('#container2').highcharts({
+					  chart: {
+         						   type: 'column'
+     						   },
+				        title: {
+				            text: '',
+				            x: -20 //cente
+				        },
+				        subtitle: {
+				            text: '',
+				            x: -20
+				        },
+				        xAxis: {
+				            categories: data.categories,
+				             labels: { 
+							                rotation: -90,   //竖直放
+	                                        rotation: -45    //45度倾斜 
+								       } 
+				        },
+				      	yAxis : {
+								title : {
+									text : '件数'
+								},
+								min:0
+							},
+				        tooltip: {
+				            valueSuffix: ''
+				        },
+				        legend: {
+				            layout: 'vertical',
+				            align: 'right',
+				            verticalAlign: 'middle',
+				            borderWidth: 0
+				        },
+				        series:  data.series
+				    });
+				},
+				error : function(e) {
+					alert("远程获取数据错误");
+				}
+			});
+		 $('#dglawFMR').datagrid({
+		            url:'/front/search/table_getPatentSumData_dataGrid_lawFMR',
+		            pagination:true,
+		            checkbox:true,
+		            height:930,
+		            fitColumns:true,
+		            multiSort:false,
+		            columns:[[
+		                {field:'fmr',title:'发明人',width:9,align:'center'},
+		                {field:'lawName0',title:'失效专利',width:9,align:'center',formatter:lawFmrSearch},
+		            ]]
+		        });		
+         } 
+	       if(title=="法律状态国省分析"){
+		      	 $.ajax( {
+				type : "post",
+				url : '/front/search/table_getPatentSumData_lawNC',
+				success : function(data) {
+				var data = $.parseJSON(data);
+					var highcharts =  $('#container3').highcharts({
+					    chart: {
+         						   type: 'column'
+     						   },
+				        title: {
+				            text: '',
+				            x: -20 //cente
+				        },
+				        subtitle: {
+				            text: '',
+				            x: -20
+				        },
+				        xAxis: {
+				            categories: data.categories,
+				             labels: { 
+							                rotation: -90,   //竖直放
+	                                        rotation: -45    //45度倾斜 
+								       } 
+				        },
+				      	yAxis : {
+								title : {
+									text : '件数'
+								},
+								min:0
+							},
+				        tooltip: {
+				            valueSuffix: ''
+				        },
+				        legend: {
+				            layout: 'vertical',
+				            align: 'right',
+				            verticalAlign: 'middle',
+				            borderWidth: 0
+				        },
+				        series:  data.series
+				    });
+				},
+				error : function(e) {
+					alert("远程获取数据错误");
+				}
+			});
+			 $('#dglawNC').datagrid({
+		            url:'/front/search/table_getPatentSumData_dataGrid_lawNC',
+		            pagination:true,
+		            checkbox:true,
+		            height:930,
+		            fitColumns:true,
+		            multiSort:false,
+		            columns:[[
+		                {field:'nc',title:'国省',width:9,align:'center'},
+		                {field:'lawNCName',title:'失效专利',width:9,align:'center'},
+		            ]]
+		        });		
+		  }
+		    if(title=="法律状态申请人分析"){
+		      	 $.ajax( {
+				type : "post",
+				url : '/front/search/table_getPatentSumData_lawSQR',
+				success : function(data) {
+				var data = $.parseJSON(data);
+					var highcharts =  $('#container4').highcharts({
+					 chart: {
+         						   type: 'column'
+     						   },
+				        title: {
+				            text: '',
+				            x: -20 //cente
+				        },
+				        subtitle: {
+				            text: '',
+				            x: -20
+				        },
+				        xAxis: {
+				            categories: data.categories,
+				             labels: { 
+							                rotation: -90,   //竖直放
+	                                        rotation: -45    //45度倾斜 
+								       } 
+				        },
+				      	yAxis : {
+								title : {
+									text : '件数'
+								},
+								min:0
+							},
+				        tooltip: {
+				            valueSuffix: ''
+				        },
+				        legend: {
+				            layout: 'vertical',
+				            align: 'right',
+				            verticalAlign: 'middle',
+				            borderWidth: 0
+				        },
+				        series:  data.series
+				    });
+				},
+				error : function(e) {
+					alert("远程获取数据错误");
+				}
+			});
+			 $('#dglawSQR').datagrid({
+		            url:'/front/search/table_getPatentSumData_dataGrid_lawSQR',
+		            pagination:true,
+		            checkbox:true,
+		            height:930,
+		            fitColumns:true,
+		            multiSort:false,
+		            columns:[[
+		                {field:'sqr',title:'申请人',width:9,align:'center'},
+		                {field:'lawSQRName',title:'无效专利',width:9,align:'center'},
+		            ]]
+		        });		
+		  } 
+		    if(title=="法律状态技术分类分析"){
+		      	 $.ajax( {
+				type : "post",
+				url : '/front/search/table_getPatentSumData_lawIPC',
+				success : function(data) {
+				var data = $.parseJSON(data);
+					var highcharts =  $('#container5').highcharts({
+					    chart: {
+         						   type: 'column'
+     						   },
+				        title: {
+				            text: '',
+				            x: -20 //cente
+				        },
+				        subtitle: {
+				            text: '',
+				            x: -20
+				        },
+				        xAxis: {
+				            categories: data.categories,
+				             labels: { 
+							                rotation: -90,   //竖直放
+	                                        rotation: -45    //45度倾斜 
+								       } 
+				        },
+				      	yAxis : {
+								title : {
+									text : '件数'
+								},
+								min:0
+							},
+				        tooltip: {
+				            valueSuffix: ''
+				        },
+				        legend: {
+				            layout: 'vertical',
+				            align: 'right',
+				            verticalAlign: 'middle',
+				            borderWidth: 0
+				        },
+				        series:  data.series
+				    });
+				},
+				error : function(e) {
+					alert("远程获取数据错误");
+				}
+			});
+			 $('#dglawIPC').datagrid({
+		            url:'/front/search/table_getPatentSumData_dataGrid_lawIPC',
+		            pagination:true,
+		            checkbox:true,
+		            height:930,
+		            fitColumns:true,
+		            multiSort:false,
+		            columns:[[
+		                {field:'ipc',title:'技术分类',width:9,align:'center'},
+		                {field:'lawIPCName',title:'无效专利',width:9,align:'center'},
+		            ]]
+		        });		
+		  }
+       }
+    });
+});	
+
+   
+</script>
+
+</head>
+<body>
+     <div id="tt" class="easyui-tabs" style="width:750px;height:500px">
+	        <div  title="法律状态构成分析" style="padding:10px">
+       			<div id="container1" style="min-width: 100px; height: 250px; margin: 0 auto">
+       			</div>
+            <table id='dgLAW' ></table>
+	        </div>
+	          <div title="法律状态发明人分析" style="padding:10px">
+       			<div id="container2" style="min-width: 100px; height: 250px; margin: 0 auto">
+       			</div>
+       			<table id='dglawFMR' ></table>    
+	        </div>
+	          <div title="法律状态国省分析" style="padding:10px">
+       			<div id="container3" style="min-width: 100px; height: 250px; margin: 0 auto">
+       			</div>
+       			<table id='dglawNC' ></table>    
+	        </div>
+	          <div title="法律状态申请人分析" style="padding:10px">
+       			<div id="container4" style="min-width: 100px; height: 250px; margin: 0 auto">
+       			</div>
+       			<table id='dglawSQR' ></table>    
+	        </div>
+	             <div title="法律状态技术分类分析" style="padding:10px">
+       			<div id="container5" style="min-width: 100px; height: 250px; margin: 0 auto">
+       			</div>
+       			<table id='dglawIPC' ></table>    
+	        </div>
+	        
+    	</div>
+</body>
+</html>

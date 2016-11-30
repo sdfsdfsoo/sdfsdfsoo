@@ -1,0 +1,121 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>畅远专利检索分析系统</title>
+<link href="css/style.css" type="text/css" rel="stylesheet">
+<link href="css/jquery-ui.css" type="text/css" rel="stylesheet">
+<script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
+<script type="text/javascript" src="js/jquery-ui.js"></script>
+<script type="text/javascript">
+		$(document).ready(
+				function() {
+				//智能检索输入框提示
+				var content='<p align=left>一般检索将检索项分为三类：数字字母混合类、纯数字类、其它类</br>数字字母混合类包括：IPC分类号(IC)、优先权(PR)；</br>'+
+				'纯数字类包括：申请号(AN)、申请日(AD)、公告号(GN)、公告日(GD)、公开号(PN)、公开日(PD)；</br>'
+				+'其它类包括：发明人(IN)、发明名称(TI)、申请人(PA)、主权利要求(CL)、摘要(AB)；</br>'+
+				'<font color=red>注意：一般检索不对国省代码(CO)、申请人地址(DZ)、代理机构(AG)</font></p>'
+				$("#searchContent").tooltip({
+			track:true,
+			content: content
+		});
+					var showUC = '0';
+					//console.log(showUC);
+					if (showUC == 0) {
+						//$("span.userCenter").parent().hide();
+						$("span.login").parent().show();
+						$("span.register").parent().show();
+						$("#Smartnavbom ul li").css('margin', '0px 38px');
+					} else if (showUC == 1) {
+						//$("span.login").parent().hide();
+						//$("span.register").parent().hide();
+						$("span.userCenter").parent().show();
+						$("span.logout").parent().show();
+						$("#userCenterLink").show();
+						$("#Smartnavbom ul li").css('margin', '0px 20px');
+					}
+
+					$('#Smartnavbom a').hover(
+							function() {
+								var src = $(this).children("img").attr('src');
+								//var x = src.substring(0, src.indexOf('-')) + "-2_bj.jpg";
+								$(this).children("img").attr(
+										'src',
+										src.substring(0, src.indexOf('-'))
+												+ "-2_bj.jpg");
+							},
+							function() {
+								var src = $(this).children("img").attr('src');
+								$(this).children("img").attr(
+										'src',
+										src.substring(0, src.indexOf('-'))
+												+ "-1_bj.jpg");
+							});
+				});
+	 function smartSearch(){ 
+				 // 构建检索式与校验检索式
+		  simpleSearchNew();
+				 // 提交表单
+          document.getElementById('searchForm').submit();
+    }
+    
+
+//专利类型切换
+var patentType = "cn";
+function switchPatentType() {
+    var obj = arguments[0];
+    if (patentType == "cn" && obj.id == "btnPatentEn") {
+        $("#btnPatentCn").attr("class", "btnPatentCnOff");
+        $("#btnPatentEn").attr("class", "btnPatentEn");
+        patentType = "en";
+        document.getElementsByName("searchscope")[0].value="DocDB";
+    } else if (patentType == "en" && obj.id == "btnPatentCn") {
+        $("#btnPatentCn").attr("class", "btnPatentCn");
+        $("#btnPatentEn").attr("class", "btnPatentEnOff");
+        patentType = "cn";
+      document.getElementsByName("searchscope")[0].value="Cn";
+    }
+}
+	</script>
+
+</head>
+<body>
+<div class="top">
+江苏畅远信息科技有限公司&nbsp;&nbsp;<a href="#">退出登录</a>
+</div>
+<div class="shadow"></div>
+<div class="logo"><img src="img/logo2.png"></div>
+<div class="SearchLeftPad">
+   <div id="BtnUl">
+      <ul>
+         <li><a id="btnPatentCn" class="btnPatentCn" onclick="switchPatentType(this)">中国专利检索 </a></li>
+          <li><a id="btnPatentEn" class="btnPatentEnOff" onclick="switchPatentType(this)">世界专利检索</a></li>
+      </ul>
+   </div>
+   <form action="/front/search/table_tableSearch" id="searchForm">
+		<input name="searchType" value="smart" type="hidden" />
+		<input name="searchscope" value="Cn" type="hidden" />
+		<input id="strFinalQuery" name="searchFormula" type="hidden" />        
+        <div id="divText">
+			<textarea id="searchContent" name="keyword" class="simpleSearchTxb" title="" ></textarea>
+            <a id="btnQuery_11" href="javascript:;"> <img id="BtnSearch" alt="检索" src="img/search.png" title="命令行检索" onclick="smartSearch()" /></a>
+							</div>
+						</form>
+    <div class="win">
+       <ul>
+          <li id="win6"><a href="#">企业个性库</a></li>
+          <li id="win1"><a href="#">高级检索</a></li>
+          <li id="win2"><a href="#">算式检索</a></li>
+          <li id="win3"><a href="#">分类检索</a></li>
+       </ul> 
+       <ul>
+          <li id="win8"><a href="#">在线帮助</a></li>
+          <li id="win7"><a href="#">用户中心</a></li>
+          <li id="win4"><a href="#">中国法律状态检索</a></li>
+          <li id="win5"><a href="#">历史记录</a></li>
+       </ul>
+    </div>
+</div>
+<div class="foot">建议使用IE8以上谷歌浏览器<br>开发公司：江苏畅远信息科技有限公司&nbsp;&nbsp;技术支持：电话：0511-820161&nbsp;&nbsp;传真：0511-88892923<br>邮箱：zjcy_88@163.com&nbsp;&nbsp;地址：镇江市新区丁卯经十五路99号中心研发区C30栋3楼</div>
+</body>
+</html>

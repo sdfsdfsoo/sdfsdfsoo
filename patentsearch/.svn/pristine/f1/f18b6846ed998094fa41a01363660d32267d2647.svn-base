@@ -1,0 +1,439 @@
+ 
+
+var law = $.extend({}, $.fn.datagrid.defaults.view, {
+	renderRow : function(target, fields, frozen, rowIndex, rowData) {
+		if(rowData.legalStatusInfo=="公开"|rowData.legalStatusInfo=="实质审查的生效"|rowData.legalStatusInfo=="专利权的视为放弃"|rowData.legalStatusInfo=="专利权的撤销"
+		  |rowData.legalStatusInfo=="专利权的全部撤销"|rowData.legalStatusInfo=="专利权的部分撤销"|rowData.legalStatusInfo=="专利权有效期的续展"|rowData.legalStatusInfo=="中止程序"
+		  |rowData.legalStatusInfo=="审定"|rowData.legalStatusInfo=="授权"){
+			var cc = [];
+			cc.push('<td  style="padding:10px 5px;border:0;width:1000px">');
+			cc.push('<div class="gridViewItem">');
+			cc.push('<div class="title1">');
+			cc.push('<b>申请号</b>： <a href="/front/search/table_patentDetailUI?cnDescriptionItem.appno='+rowData.appnoValue+'" target="_blank">' + rowData.shenQingH
+					+ '</a></div>');
+			cc.push('<div class="note">');
+			cc.push('<br/><br/><b>法律状态公告日</b>：' + rowData.legalDate
+					+ '<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 法律状态</b>：' + rowData.legalStatus
+					+ '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+' <b>法律状态信息</b>：' + rowData.legalStatusInfo + '<br /><br /><br />');
+			
+			 cc.push('</div></div>'); 
+			cc.push('</td>');
+		}else
+		if(rowData.legalStatusInfo=="专利局对专利申请实质审查的决定"|rowData.legalStatusInfo=="专利申请权、专利权的转移"|rowData.legalStatusInfo=="专利实施的强制许可"
+		    |rowData.legalStatusInfo=="专利实施许可合同备案的生效、变更及注销"|rowData.legalStatusInfo=="专利权质押合同登记的生效、变更及注销"
+		    |rowData.legalStatusInfo=="专利权人的姓名或者名称、地址的变更" |rowData.legalStatusInfo=="发明专利公布全文再版"
+		    |rowData.legalStatusInfo=="发明专利授权扉页更正" |rowData.legalStatusInfo=="发明专利授权全文再版"){
+			var cc = [];
+			
+		}else
+		if(rowData.legalStatusInfo=="发明专利申请公布后的驳回"|rowData.legalStatusInfo=="发明专利申请公布后的撤回"|rowData.legalStatusInfo=="发明专利申请公布后的视为撤回"){
+			var cc = [];
+			cc.push('<td  style="padding:10px 5px;border:0;width:1000px">');
+			cc.push('<div class="gridViewItem">');
+			cc.push('<div class="title1">');
+			cc.push('<b>申请号</b>： <a href="/front/search/table_patentDetailUI?cnDescriptionItem.appno='+rowData.appnoValue+'" target="_blank">' + rowData.shenQingH
+					+ '</a></div>');
+			cc.push('<div class="note">');
+			cc.push('<br/><br/><b>法律状态公告日</b>：' + rowData.legalDate
+					+ '<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 法律状态</b>：' + rowData.legalStatus
+					+ '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+' <b>法律状态信息</b>：' + rowData.legalStatusInfo + '<br /><br />');
+			
+			 cc.push('申请公布日：'+ rowData.shenQingGbr+'<br /><br />'); 
+			 cc.push('</div></div>'); 
+			cc.push('</td>');
+		}else
+		if(rowData.legalStatusInfo=="专利权的无效宣告"|rowData.legalStatusInfo=="专利权全部无效"|rowData.legalStatusInfo=="专利权部分无效"){
+			var cc = [];
+			cc.push('<td  style="padding:10px 5px;border:0;width:1000px">');
+			cc.push('<div class="gridViewItem">');
+			cc.push('<div class="title1">');
+			cc.push('<b>申请号</b>： <a href="/front/search/table_patentDetailUI?cnDescriptionItem.appno='+rowData.appnoValue+'" target="_blank">' + rowData.shenQingH
+					+ '</a></div>');
+			cc.push('<div class="note">');
+			cc.push('<br/><br/><b>法律状态公告日</b>：' + rowData.legalDate
+					+ '<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 法律状态</b>：' + rowData.legalStatus
+					+ '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+' <b>法律状态信息</b>：' + rowData.legalStatusInfo + '<br />');
+			
+			 cc.push('授权公告日：'+ rowData.shouquanGgr +'<br />'); 
+			 cc.push('无效宣告决定号：<a herf=#>'+rowData.wuXiaoXgjdh+'</a>'+ '<br />'); 
+			 cc.push('无效宣告决定日：'+rowData.wuXiaoXgjdr+ '<br />'); 
+			 cc.push('</div></div>'); 
+			cc.push('</td>');
+		}else
+		if(rowData.legalStatusInfo=="专利权终止"|rowData.legalStatusInfo=="未缴年费专利权终止"){
+			var cc = [];
+			cc.push('<td  style="padding:10px 5px;border:0;width:1000px">');
+			cc.push('<div class="gridViewItem">');
+			cc.push('<div class="title1">');
+			cc.push('<b>申请号</b>： <a href="/front/search/table_patentDetailUI?cnDescriptionItem.appno='+rowData.appnoValue+'" target="_blank">' + rowData.shenQingH
+					+ '</a></div>');
+			cc.push('<div class="note">');
+			cc.push('<br/><br/><b>法律状态公告日</b>：' + rowData.legalDate
+					+ '<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 法律状态</b>：' + rowData.legalStatus
+					+ '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+' <b>法律状态信息</b>：' + rowData.legalStatusInfo + '<br />');
+			
+			 cc.push('申请日：' + rowData.shenQingR +'<br />'); 
+			 cc.push('授权公告日：'+ rowData.shouquanGgr +'<br />'); 
+			 cc.push('终止日期：'+ rowData.zhongZhiR + '<br />'); 
+			 cc.push('</div></div>'); 
+			cc.push('</td>');
+		}else
+		if(rowData.legalStatusInfo=="专利权有效期届满"){
+			var cc = [];
+			cc.push('<td  style="padding:10px 5px;border:0;width:1000px">');
+			cc.push('<div class="gridViewItem">');
+			cc.push('<div class="title1">');
+			cc.push('<b>申请号</b>： <a href="/front/search/table_patentDetailUI?cnDescriptionItem.appno='+rowData.appnoValue+'" target="_blank">' + rowData.shenQingH
+					+ '</a></div>');
+			cc.push('<div class="note">');
+			cc.push('<br/><br/><b>法律状态公告日</b>：' + rowData.legalDate
+					+ '<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 法律状态</b>：' + rowData.legalStatus
+					+ '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+' <b>法律状态信息</b>：' + rowData.legalStatusInfo + '<br />');
+			
+			 cc.push('申请日：'+ rowData.shenQingR +'<br />'); 
+			 cc.push('授权公告日：'+ rowData.shouquanGgr +'<br />'); 
+			 cc.push('期满终止日期：'+ rowData.zhongZhiR + '<br />'); 
+			 cc.push('</div></div>'); 
+			cc.push('</td>');
+		}else
+		if(rowData.legalStatusInfo=="专利权的主动放弃"){
+			var cc = [];
+			cc.push('<td  style="padding:10px 5px;border:0;width:1000px">');
+			cc.push('<div class="gridViewItem">');
+			cc.push('<div class="title1">');
+			cc.push('<b>申请号</b>： <a href="/front/search/table_patentDetailUI?cnDescriptionItem.appno='+rowData.appnoValue+'" target="_blank">' + rowData.shenQingH
+					+ '</a></div>');
+			cc.push('<div class="note">');
+			cc.push('<br/><br/><b>法律状态公告日</b>：' + rowData.legalDate
+					+ '<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 法律状态</b>：' + rowData.legalStatus
+					+ '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+' <b>法律状态信息</b>：' + rowData.legalStatusInfo + '<br />');
+			
+			 cc.push('申请日：'+ rowData.shenQingR +'<br />'); 
+			 cc.push('授权公告日：'+ rowData.shouquanGgr +'<br />'); 
+			 cc.push('</div></div>'); 
+			cc.push('</td>');
+		}else
+		if(rowData.legalStatusInfo=="避免重复授予专利权"|rowData.legalStatusInfo=="避免重复授权放弃专利权"){
+			var cc = [];
+			cc.push('<td  style="padding:10px 5px;border:0;width:1000px">');
+			cc.push('<div class="gridViewItem">');
+			cc.push('<div class="title1">');
+			cc.push('<b>申请号</b>： <a href="/front/search/table_patentDetailUI?cnDescriptionItem.appno='+rowData.appnoValue+'" target="_blank">' + rowData.shenQingH
+					+ '</a></div>');
+			cc.push('<div class="note">');
+			cc.push('<br/><br/><b>法律状态公告日</b>：' + rowData.legalDate
+					+ '<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 法律状态</b>：' + rowData.legalStatus
+					+ '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+' <b>法律状态信息</b>：' + rowData.legalStatusInfo + '<br />');
+			
+			 cc.push('申请日：'+ rowData.shenQingR +'<br />'); 
+			 cc.push('授权公告日：'+ rowData.shouquanGgr +'<br />');  
+			 cc.push('放弃生效日：'+ rowData.fangQiSxr+ '<br />'); 
+			 cc.push('</div></div>'); 
+			cc.push('</td>');
+		}else
+		if(rowData.legalStatusInfo=="专利申请或者专利权的恢复"|rowData.legalStatusInfo=="专利申请的恢复"|rowData.legalStatusInfo=="专利权的恢复"){
+			var cc = [];
+			cc.push('<td  style="padding:10px 5px;border:0;width:1000px">');
+			cc.push('<div class="gridViewItem">');
+			cc.push('<div class="title1">');
+			cc.push('<b>申请号</b>： <a href="/front/search/table_patentDetailUI?cnDescriptionItem.appno='+rowData.appnoValue+'" target="_blank">' + rowData.shenQingH
+					+ '</a></div>');
+			cc.push('<div class="note">');
+			cc.push('<br/><br/><b>法律状态公告日</b>：' + rowData.legalDate
+					+ '<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 法律状态</b>：' + rowData.legalStatus
+					+ '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+' <b>法律状态信息</b>：' + rowData.legalStatusInfo + '<br />');
+			
+			 cc.push('申请日：'+ rowData.shenQingR +'<br />'); 
+			 cc.push('原决定名称：'+ rowData.yuanMingC +'<br />'); 
+			 cc.push('原决定公告日：'+rowData.yuanGongGr+ '<br />'); 
+			 cc.push('</div></div>'); 
+			cc.push('</td>');
+		}else
+		if(rowData.legalStatusInfo=="专利申请权的转移"|rowData.legalStatusInfo=="专利权的转移"){
+			var cc = [];
+			cc.push('<td  style="padding:10px 5px;border:0;width:1000px">');
+			cc.push('<div class="gridViewItem">');
+			cc.push('<div class="title1">');
+			cc.push('<b>申请号</b>： <a href="/front/search/table_patentDetailUI?cnDescriptionItem.appno='+rowData.appnoValue+'" target="_blank">' + rowData.shenQingH
+					+ '</a></div>');
+			cc.push('<div class="note">');
+			cc.push('<br/><br/><b>法律状态公告日</b>：' + rowData.legalDate
+					+ '<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 法律状态</b>：' + rowData.legalStatus
+					+ '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+' <b>法律状态信息</b>：' + rowData.legalStatusInfo + '<br />');
+			
+			 cc.push('变更事项：'+ rowData.bianGengSx+ '<br />'); 
+			 cc.push('变更前权利人：'+ rowData.bianGengQ+ '<br />'); 
+			 cc.push('变更后权利人：'+ rowData.bianGengH+ '<br />'); 
+			 cc.push('登记生效日：'+ rowData.dengJiSxr+  '<br />'); 
+			 cc.push('</div></div>'); 
+			cc.push('</td>');
+		}else
+		if(rowData.legalStatusInfo=="专利实施许可合同备案的生效"){
+			var cc = [];
+			cc.push('<td  style="padding:10px 5px;border:0;width:1000px">');
+			cc.push('<div class="gridViewItem">');
+			cc.push('<div class="title1">');
+			cc.push('<b>申请号</b>： <a href="/front/search/table_patentDetailUI?cnDescriptionItem.appno='+rowData.appnoValue+'" target="_blank">' + rowData.shenQingH
+					+ '</a></div>');
+			cc.push('<div class="note">');
+			cc.push('<br/><br/><b>法律状态公告日</b>：' + rowData.legalDate
+					+ '<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 法律状态</b>：' + rowData.legalStatus
+					+ '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+' <b>法律状态信息</b>：' + rowData.legalStatusInfo + '<br />');
+			
+			 cc.push('合同备案号：'+rowData.heTongBah+ '<br />'); 
+			 cc.push('让与人：'+ rowData.rangYuR+'<br />'); 
+			 cc.push('受让人：'+ rowData.shouRangR+'<br />'); 
+			 cc.push('发明名称：'+ rowData.zhuanLiMc+ '<br />'); 
+			 cc.push('申请日：'+ rowData.shenQingR +'<br />'); 
+			 cc.push('申请公布日：'+ rowData.shenQingGbr+'<br />'); 
+			 cc.push('授权公告日：'+ rowData.shouquanGgr +'<br />'); 
+			 cc.push('许可种类：'+ rowData.xuKeZl +'<br />'); 
+			 cc.push('备案日期：'+rowData.beiAnRq + '<br />'); 
+			 cc.push('</div></div>'); 
+			cc.push('</td>');
+		}else
+		if(rowData.legalStatusInfo=="专利实施许可合同备案的变更"){
+			var cc = [];
+			cc.push('<td  style="padding:10px 5px;border:0;width:1000px">');
+			cc.push('<div class="gridViewItem">');
+			cc.push('<div class="title1">');
+			cc.push('<b>申请号</b>： <a href="/front/search/table_patentDetailUI?cnDescriptionItem.appno='+rowData.appnoValue+'" target="_blank">' + rowData.shenQingH
+					+ '</a></div>');
+			cc.push('<div class="note">');
+			cc.push('<br/><br/><b>法律状态公告日</b>：' + rowData.legalDate
+					+ '<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 法律状态</b>：' + rowData.legalStatus
+					+ '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+' <b>法律状态信息</b>：' + rowData.legalStatusInfo + '<br />');
+			
+			 cc.push('合同备案号：'+ rowData.heTongBah	+'<br />'); 
+			 cc.push('变更日：'+ rowData.bianGengR	+'<br />'); 
+			 cc.push('变更事项：'+ rowData.bianGengSx+ '<br />'); 
+			 cc.push('变更前：'+rowData.bianGengQ+ '<br />'); 
+			 cc.push('变更后：'+ rowData.bianGengH+'<br />'); 
+			 cc.push('</div></div>'); 
+			cc.push('</td>');
+		}else
+		if(rowData.legalStatusInfo=="专利实施许可合同备案的注销"){
+			var cc = [];
+			cc.push('<td  style="padding:10px 5px;border:0;width:1000px">');
+			cc.push('<div class="gridViewItem">');
+			cc.push('<div class="title1">');
+			cc.push('<b>申请号</b>： <a href="/front/search/table_patentDetailUI?cnDescriptionItem.appno='+rowData.appnoValue+'" target="_blank">' + rowData.shenQingH
+					+ '</a></div>');
+			cc.push('<div class="note">');
+			cc.push('<br/><br/><b>法律状态公告日</b>：' + rowData.legalDate
+					+ '<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 法律状态</b>：' + rowData.legalStatus
+					+ '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+' <b>法律状态信息</b>：' + rowData.legalStatusInfo + '<br />');
+			
+			 cc.push('合同备案号：'+ rowData.heTongBah	+'<br />'); 
+			 cc.push('让与人：'+ rowData.rangYuR	+'<br />'); 
+			 cc.push('受让人：'+ rowData.shouRangR+'<br />'); 
+			 cc.push('解除日：'+ rowData.jieChuR+'<br />'); 
+			 cc.push('</div></div>'); 
+			cc.push('</td>');
+		}else
+		if(rowData.legalStatusInfo=="专利权质押合同登记的生效"){
+			var cc = [];
+			cc.push('<td  style="padding:10px 5px;border:0;width:1000px">');
+			cc.push('<div class="gridViewItem">');
+			cc.push('<div class="title1">');
+			cc.push('<b>申请号</b>： <a href="/front/search/table_patentDetailUI?cnDescriptionItem.appno='+rowData.appnoValue+'" target="_blank">' + rowData.shenQingH
+					+ '</a></div>');
+			cc.push('<div class="note">');
+			cc.push('<br/><br/><b>法律状态公告日</b>：' + rowData.legalDate
+					+ '<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 法律状态</b>：' + rowData.legalStatus
+					+ '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+' <b>法律状态信息</b>：' + rowData.legalStatusInfo + '<br />');
+			
+			 cc.push('登记号：'+rowData.dengJiH + '<br />'); 
+			 cc.push('登记生效日：'+ rowData.dengJiSxr + '<br />'); 
+			 cc.push('出质人：'+rowData.chuZhiR + '<br />'); 
+			 cc.push('质权人：'+rowData.zhiQuanR + '<br />'); 
+			 cc.push('发明名称：'+ rowData.zhuanLiMc + '<br />'); 
+			 cc.push('申请日：'+rowData.shenQingR + '<br />'); 
+			 cc.push('授权公告日：'+ rowData.shouquanGgr +'<br />'); 
+			 cc.push('</div></div>'); 
+			cc.push('</td>');
+		}else
+		if(rowData.legalStatusInfo=="专利权质押合同登记的变更"){
+			var cc = [];
+			cc.push('<td  style="padding:10px 5px;border:0;width:1000px">');
+			cc.push('<div class="gridViewItem">');
+			cc.push('<div class="title1">');
+			cc.push('<b>申请号</b>： <a href="/front/search/table_patentDetailUI?cnDescriptionItem.appno='+rowData.appnoValue+'" target="_blank">' + rowData.shenQingH
+					+ '</a></div>');
+			cc.push('<div class="note">');
+			cc.push('<br/><br/><b>法律状态公告日</b>：' + rowData.legalDate
+					+ '<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 法律状态</b>：' + rowData.legalStatus
+					+ '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+' <b>法律状态信息</b>：' + rowData.legalStatusInfo + '<br />');
+			
+			 cc.push('登记号：'+rowData.dengJiH +  '<br />'); 
+			 cc.push('变更日：'+ rowData.bianGengR + '<br />'); 
+			 cc.push('变更事项：'+ rowData.bianGengSx + '<br />'); 
+			 cc.push('变更前：'+rowData.bianGengQ +  '<br />'); 
+			 cc.push('变更后：'+rowData.bianGengH +  '<br />'); 
+			 cc.push('</div></div>'); 
+			cc.push('</td>');
+		}else
+		if(rowData.legalStatusInfo=="专利权质押合同登记的注销"){
+			var cc = [];
+			cc.push('<td  style="padding:10px 5px;border:0;width:1000px">');
+			cc.push('<div class="gridViewItem">');
+			cc.push('<div class="title1">');
+			cc.push('<b>申请号</b>： <a href="/front/search/table_patentDetailUI?cnDescriptionItem.appno='+rowData.appnoValue+'" target="_blank">' + rowData.shenQingH
+					+ '</a></div>');
+			cc.push('<div class="note">');
+			cc.push('<br/><br/><b>法律状态公告日</b>：' + rowData.legalDate
+					+ '<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 法律状态</b>：' + rowData.legalStatus
+					+ '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+' <b>法律状态信息</b>：' + rowData.legalStatusInfo + '<br />');
+			
+			 cc.push('授权公告日：'+ rowData.shouquanGgr +'<br />'); 
+			 cc.push('申请日：'+rowData.shenQingR + '<br />'); 
+			 cc.push('登记号：'+rowData.dengJiH + '<br />'); 
+			 cc.push('出质人：'+rowData.chuZhiR + '<br />'); 
+			 cc.push('质权人：'+ rowData.zhiQuanR +'<br />'); 
+			 cc.push('解除日：'+rowData.jieChuR + '<br />'); 
+			 cc.push('</div></div>'); 
+			cc.push('</td>');
+		}else
+		if(rowData.legalStatusInfo=="专利权的保全及其解除"|rowData.legalStatusInfo=="专利权的保全"|rowData.legalStatusInfo=="专利权保全的解除"){
+			var cc = [];
+			cc.push('<td  style="padding:10px 5px;border:0;width:1000px">');
+			cc.push('<div class="gridViewItem">');
+			cc.push('<div class="title1">');
+			cc.push('<b>申请号</b>： <a href="/front/search/table_patentDetailUI?cnDescriptionItem.appno='+rowData.appnoValue+'" target="_blank">' + rowData.shenQingH
+					+ '</a></div>');
+			cc.push('<div class="note">');
+			cc.push('<br/><br/><b>法律状态公告日</b>：' + rowData.legalDate
+					+ '<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 法律状态</b>：' + rowData.legalStatus
+					+ '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+' <b>法律状态信息</b>：' + rowData.legalStatusInfo + '<br />');
+			
+			 cc.push('申请日：20060615'+ '<br />'); 
+			 cc.push('授权公告日：'+ rowData.shouquanGgr +'<br />'); 
+			 cc.push('登记生效日：'+ rowData.dengJiSxr + '<br />'); 
+			 cc.push('解除日：20140416'+ '<br />'); 
+			 cc.push('</div></div>'); 
+			cc.push('</td>');
+		}else
+		if(rowData.legalStatusInfo=="著录事项变更"){
+			var cc = [];
+			cc.push('<td  style="padding:10px 5px;border:0;width:1000px">');
+			cc.push('<div class="gridViewItem">');
+			cc.push('<div class="title1">');
+			cc.push('<b>申请号</b>： <a href="/front/search/table_patentDetailUI?cnDescriptionItem.appno='+rowData.appnoValue+'" target="_blank">' + rowData.shenQingH
+					+ '</a></div>');
+			cc.push('<div class="note">');
+			cc.push('<br/><br/><b>法律状态公告日</b>：' + rowData.legalDate
+					+ '<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 法律状态</b>：' + rowData.legalStatus
+					+ '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+' <b>法律状态信息</b>：' + rowData.legalStatusInfo + '<br />');
+			
+			 cc.push('变更事项：'+ rowData.bianGengSx + '<br />'); 
+			 cc.push('变更前：'+ rowData.bianGengQ + '<br />'); 
+			 cc.push('变更后：'+ rowData.bianGengH + '<br />'); 
+			 cc.push('</div></div>'); 
+			cc.push('</td>');
+		}else
+		if(rowData.legalStatusInfo=="文件的公告送达"){
+			var cc = [];
+			cc.push('<td  style="padding:10px 5px;border:0;width:1000px">');
+			cc.push('<div class="gridViewItem">');
+			cc.push('<div class="title1">');
+			cc.push('<b>申请号</b>： <a href="/front/search/table_patentDetailUI?cnDescriptionItem.appno='+rowData.appnoValue+'" target="_blank">' + rowData.shenQingH
+					+ '</a></div>');
+			cc.push('<div class="note">');
+			cc.push('<br/><br/><b>法律状态公告日</b>：' + rowData.legalDate
+					+ '<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 法律状态</b>：' + rowData.legalStatus
+					+ '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+' <b>法律状态信息</b>：' + rowData.legalStatusInfo + '<br />');
+			
+			 cc.push('收件人：'+  rowData.shouJianR+'<br />'); 
+			 cc.push('文件名称：'+ rowData.wenJianMc +'<br />'); 
+			 cc.push('</div></div>'); 
+			cc.push('</td>');
+		}else
+		if(rowData.legalStatusInfo=="其他有关事项"){
+			var cc = [];
+			cc.push('<td  style="padding:10px 5px;border:0;width:1000px">');
+			cc.push('<div class="gridViewItem">');
+			cc.push('<div class="title1">');
+			cc.push('<b>申请号</b>： <a href="/front/search/table_patentDetailUI?cnDescriptionItem.appno='+rowData.appnoValue+'" target="_blank">' + rowData.shenQingH
+					+ '</a></div>');
+			cc.push('<div class="note">');
+			cc.push('<br/><br/><b>法律状态公告日</b>：' + rowData.legalDate
+					+ '<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 法律状态</b>：' + rowData.legalStatus
+					+ '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+' <b>法律状态信息</b>：' + rowData.legalStatusInfo + '<br />');
+			
+			 cc.push('IPC(主分类)：'+ rowData.ipc+'<br />'); 
+			 cc.push('专利号：'+rowData.shenQingH+ '<br />'); 
+			 cc.push('申请日：'+ rowData.shenQingR+'<br />'); 
+			  cc.push('授权公告日：'+ rowData.shouquanGgr +'<br />'); 
+			 cc.push('撤销决定日：'+''+ '<br />'); 
+			 cc.push('</div></div>'); 
+			cc.push('</td>');
+		}else
+		if(rowData.legalStatusInfo=="更正"|rowData.legalStatusInfo=="发明专利申请更正"|rowData.legalStatusInfo=="发明专利更正"
+			|rowData.legalStatusInfo=="实用新型专利更正"|rowData.legalStatusInfo=="外观设计专利更正"|rowData.legalStatusInfo=="发明专利申请公开说明书更正"
+			|rowData.legalStatusInfo=="实用新型专利说明书更正"|rowData.legalStatusInfo=="发明专利说明书更正"){
+			var cc = [];
+			cc.push('<td  style="padding:10px 5px;border:0;width:1000px">');
+			cc.push('<div class="gridViewItem">');
+			cc.push('<div class="title1">');
+			cc.push('<b>申请号</b>： <a href="/front/search/table_patentDetailUI?cnDescriptionItem.appno='+rowData.appnoValue+'" target="_blank">' + rowData.shenQingH
+					+ '</a></div>');
+			cc.push('<div class="note">');
+			cc.push('<br/><br/><b>法律状态公告日</b>：' + rowData.legalDate
+					+ '<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 法律状态</b>：' + rowData.legalStatus
+					+ '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+' <b>法律状态信息</b>：' + rowData.legalStatusInfo + '<br />');
+			
+			 cc.push('卷：'+ rowData.vol + '<br />'); 
+			 cc.push('号：'+ rowData.num + '<br />'); 
+			 cc.push('页码：'+ rowData.pag + '<br />'); 
+			 cc.push('更正项目：'+rowData.bianGengSx +  '<br />'); 
+			 cc.push('误：'+rowData.bianGengQ +  '<br />'); 
+			 cc.push('正：'+rowData.bianGengH +  '<br />'); 
+			 cc.push('</div></div>'); 
+			cc.push('</td>');
+		}else
+		if(rowData.legalStatusInfo=="发明专利公报更正"|rowData.legalStatusInfo=="实用新型专利公报更正"|rowData.legalStatusInfo=="发明专利公布扉页更正"){
+			var cc = [];
+			cc.push('<td  style="padding:10px 5px;border:0;width:1000px">');
+			cc.push('<div class="gridViewItem">');
+			cc.push('<div class="title1">');
+			cc.push('<b>申请号</b>： <a href="/front/search/table_patentDetailUI?cnDescriptionItem.appno='+rowData.appnoValue+'" target="_blank">' + rowData.shenQingH
+					+ '</a></div>');
+			cc.push('<div class="note">');
+			cc.push('<br/><br/><b>法律状态公告日</b>：' + rowData.legalDate
+					+ '<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 法律状态</b>：' + rowData.legalStatus
+					+ '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+' <b>法律状态信息</b>：' + rowData.legalStatusInfo + '<br />');
+			
+			 cc.push('卷：'+ rowData.vol + '<br />'); 
+			 cc.push('号：'+ rowData.num + '<br />'); 
+			 cc.push('IPC(主分类)：'+ rowData.ipc +'<br />'); 
+			 cc.push('更正项目：'+rowData.bianGengSx +  '<br />'); 
+			 cc.push('误：'+rowData.bianGengQ +  '<br />'); 
+			 cc.push('正：'+rowData.bianGengH +  '<br />'); 
+			 cc.push('</div></div>'); 
+			cc.push('</td>');
+		}else
+		if(rowData.legalStatusInfo=="外观设计专利公报更正"){
+			var cc = [];
+			cc.push('<td  style="padding:10px 5px;border:0;width:1000px">');
+			cc.push('<div class="gridViewItem">');
+			cc.push('<div class="title1">');
+			cc.push('<b>申请号</b>： <a href="/front/search/table_patentDetailUI?cnDescriptionItem.appno='+rowData.appnoValue+'" target="_blank">' + rowData.shenQingH
+					+ '</a></div>');
+			cc.push('<div class="note">');
+			cc.push('<br/><br/><b>法律状态公告日</b>：' + rowData.legalDate
+					+ '<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 法律状态</b>：' + rowData.legalStatus
+					+ '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+' <b>法律状态信息</b>：' + rowData.legalStatusInfo + '<br />');
+			
+		     cc.push('卷：'+ rowData.vol + '<br />'); 
+			 cc.push('号：'+ rowData.num + '<br />'); 
+			 cc.push('分类：'+ rowData.ipc +'<br />'); 
+			 cc.push('更正项目：'+rowData.bianGengSx +  '<br />'); 
+			 cc.push('误：'+rowData.bianGengQ +  '<br />'); 
+			 cc.push('正：'+rowData.bianGengH +  '<br />'); 
+			 cc.push('</div></div>'); 
+			cc.push('</td>');
+		}
+	
+		return cc.join('');
+	}
+});

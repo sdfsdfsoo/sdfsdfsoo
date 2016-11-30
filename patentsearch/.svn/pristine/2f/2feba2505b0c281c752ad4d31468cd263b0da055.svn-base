@@ -1,0 +1,466 @@
+package patentsearch.bean.cndescriptionitem;
+
+import java.io.Serializable;
+import java.math.BigInteger;
+import java.util.Date;
+
+import javax.annotation.Generated;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import patentsearch.bean.util.xml.XMLUtil;
+@Entity
+public class CnLegalStatus implements Serializable{
+	private static final long serialVersionUID = 8921078399791310485L;
+	
+	/*主键ID，自动编号*/
+	@Id@GeneratedValue
+	@Column (name="ID")
+	private BigInteger id;
+	/*卷期号*/
+	@Column(name="JUANQI")
+	private String juanQi;
+	/*专利类型*/
+	@Column (name="PatentType")
+	private String patentType;
+	/*法律状态日*/
+	@Column (name="LegalDate")
+	private String legalDate;
+	/*法律状态*/
+	@Column(name="LegalStatus")
+	private String legalStatus;
+	/*法律状态信息*/
+	@Column(name="LegalStatusInfo")
+	private String legalStatusInfo;
+	/*状态代码*/
+	@Column(name="LegalCode")
+	private String legalCode;
+	/*卷*/
+	@Column (name="VOL")
+	private String vol;
+	/*号*/
+	@Column (name="NUM")
+	private String num;
+	/*页*/
+	@Column (name="PAG")
+	private String pag;
+	/*IPC*/
+	@Column (name="IPC")
+	private String ipc;
+	/*申请号*/
+	@Column (name="SHENQINGH")
+	private String shenQingH;
+	/*申请日*/
+	@Column (name="SHENQINGR")
+	private String shenQingR;
+	/*公开号*/
+	@Column (name="SHENQINGGBR")
+	private String shenQingGbr;
+	/*公告号*/
+	@Column (name="SHOUQUANGGR")
+	private String shouquanGgr;
+	/*无效登记号*/
+	@Column (name="WUXIAOXGJDH")
+	private String wuXiaoXgjdh;
+	/*无效登记日*/
+	@Column (name="WUXIAOXGJDR")
+	private String wuXiaoXgjdr;
+	/*终止日*/
+	@Column  (name="ZHONGZHIR")
+	private String zhongZhiR;
+	/*放弃生效日*/
+	@Column  (name="FANGQISXR")
+	private String fangQiSxr;
+	/*原名称*/
+	@Column  (name="YUANMINGC")
+	private String yuanMingC;
+	/*原公告号*/
+	@Column  (name="YUANGONGGR")
+	private String yuanGongGr;
+	/*变更信息代码*/
+	@Column  (name="BIANGENGSXCODE")
+	private String bianGengSxCode;
+	/*变更信息*/
+	@Column  (name="BIANGENGSX")
+	private String bianGengSx;
+	/*变更前*/
+	@Column  (name="BIANGENGQ")
+	private String bianGengQ;
+	/*变更后*/
+	@Column  (name="BIANGENGH")
+	private String bianGengH;
+	/*登记生效日*/
+	@Column  (name="DENGJISXR")
+	private String dengJiSxr;
+	/*合同备案号*/
+	@Column  (name="HETONGBAH")
+	private String heTongBah;
+	/*让于人*/
+	@Column  (name="RANGYUR")
+	private String rangYuR;
+	/*受让人*/
+	@Column  (name="SHOURANGR")
+	private String shouRangR;
+	/*专利名称*/
+	@Column  (name="ZHUANLIMC")
+	private String zhuanLiMc;
+	/*许可种类*/
+	@Column  (name="XUKEZL")
+	private String xuKeZl;
+	/*备案日期*/
+	@Column  (name="BEIANRQ")
+	private String beiAnRq;
+	/*变更日*/
+	@Column  (name="BIANGENGR")
+	private String bianGengR;
+	/*解除日*/
+	@Column  (name="JIECHUR")
+	private String jieChuR;
+	/*登记号*/
+	@Column  (name="DENGJIH")
+	private String dengJiH;
+	/*出资人*/
+	@Column  (name="CHUZHIR")
+	private String chuZhiR;
+	/*质权人*/
+	@Column  (name="ZHIQUANR")
+	private String zhiQuanR;
+	/*摘要 */
+	private String zhaiYao;
+	/*主权利要求*/
+	private String zhuQuanLi;
+	/*收件日*/
+	@Column  (name="SHOUJIANR")
+	private String shouJianR;
+	/*文件名称*/
+	@Column (name="WENJIANMC")
+	private String wenJianMc;
+	/*导入数据时间*/
+	@Temporal(TemporalType.DATE)
+	@Column(name="ImportData")
+	private Date ImportData;
+	
+	public String getZhuQuanLi() {
+		return zhuQuanLi;
+	}
+	public void setZhuQuanLi(String zhuQuanLi) {
+		this.zhuQuanLi = zhuQuanLi;
+	}
+	public String getZhaiYao() {
+		return zhaiYao;
+	}
+	public void setZhaiYao(String zhaiYao) {
+		this.zhaiYao = zhaiYao;
+	}
+	public BigInteger getId() {
+		return id;
+	}
+	public void setId(BigInteger id) {
+		this.id = id;
+	}
+	public String getJuanQi() {
+		return juanQi;
+	}
+	public void setJuanQi(String juanQi) {
+		this.juanQi = juanQi;
+	}
+	public String getPatentType() {
+		return patentType;
+	}
+	public void setPatentType(String patentType) {
+		this.patentType = patentType;
+	}
+	public String getLegalDate() {
+		return legalDate;
+	}
+	public void setLegalDate(String legalDate) {
+		this.legalDate = legalDate;
+	}
+	public String getLegalStatus() {
+		return legalStatus;
+	}
+	public void setLegalStatus(String legalStatus) {
+		this.legalStatus = legalStatus;
+	}
+	public String getLegalStatusInfo() {
+		return legalStatusInfo;
+	}
+	public void setLegalStatusInfo(String legalStatusInfo) {
+		this.legalStatusInfo = legalStatusInfo;
+	}
+	public String getLegalCode() {
+		return legalCode;
+	}
+	public void setLegalCode(String legalCode) {
+		this.legalCode = legalCode;
+	}
+	public String getVol() {
+		return vol;
+	}
+	public void setVol(String vol) {
+		this.vol = vol;
+	}
+	public String getNum() {
+		return num;
+	}
+	public void setNum(String num) {
+		this.num = num;
+	}
+	public String getPag() {
+		return pag;
+	}
+	public void setPag(String pag) {
+		this.pag = pag;
+	}
+	public String getIpc() {
+		return ipc;
+	}
+	public void setIpc(String ipc) {
+		this.ipc = ipc;
+	}
+	public String getShenQingH() {
+		return shenQingH;
+	}
+	
+	public void setShenQingH(String shenQingH) {
+		this.shenQingH = shenQingH;
+	}
+	public String getShenQingHWithDot() {
+		return  shenQingH.substring(0,shenQingH.length()-1)+"."+shenQingH.charAt(shenQingH.length()-1);
+	}
+	public void setShenQingHWithDot(String shenQingH) {
+		 
+	}
+	public String getShenQingHWithNotDot() {
+		return  shenQingH.substring(0,shenQingH.length()-1);
+	}
+	public void setShenQingHWithNotDot(String shenQingH) {
+		 
+	}
+	public String getShenQingR() {
+		return shenQingR;
+	}
+	public void setShenQingR(String shenQingR) {
+		this.shenQingR = shenQingR;
+	}
+	public String getShenQingGbr() {
+		return shenQingGbr;
+	}
+	public void setShenQingGbr(String shenQingGbr) {
+		this.shenQingGbr = shenQingGbr;
+	}
+	public String getShouquanGgr() {
+		return shouquanGgr;
+	}
+	public void setShouquanGgr(String shouquanGgr) {
+		this.shouquanGgr = shouquanGgr;
+	}
+	public String getWuXiaoXgjdh() {
+		return wuXiaoXgjdh;
+	}
+	public void setWuXiaoXgjdh(String wuXiaoXgjdh) {
+		this.wuXiaoXgjdh = wuXiaoXgjdh;
+	}
+	public String getWuXiaoXgjdr() {
+		return wuXiaoXgjdr;
+	}
+	public void setWuXiaoXgjdr(String wuXiaoXgjdr) {
+		this.wuXiaoXgjdr = wuXiaoXgjdr;
+	}
+	public String getZhongZhiR() {
+		return zhongZhiR;
+	}
+	public void setZhongZhiR(String zhongZhiR) {
+		this.zhongZhiR = zhongZhiR;
+	}
+	public String getFangQiSxr() {
+		return fangQiSxr;
+	}
+	public void setFangQiSxr(String fangQiSxr) {
+		this.fangQiSxr = fangQiSxr;
+	}
+	public String getYuanMingC() {
+		return yuanMingC;
+	}
+	public void setYuanMingC(String yuanMingC) {
+		this.yuanMingC = yuanMingC;
+	}
+	public String getYuanGongGr() {
+		return yuanGongGr;
+	}
+	public void setYuanGongGr(String yuanGongGr) {
+		this.yuanGongGr = yuanGongGr;
+	}
+	public String getBianGengSxCode() {
+		return bianGengSxCode;
+	}
+	public void setBianGengSxCode(String bianGengSxCode) {
+		this.bianGengSxCode = bianGengSxCode;
+	}
+	public String getBianGengSx() {
+		return bianGengSx;
+	}
+	public void setBianGengSx(String bianGengSx) {
+		this.bianGengSx = bianGengSx;
+	}
+	public String getBianGengQ() {
+		return bianGengQ;
+	}
+	public void setBianGengQ(String bianGengQ) {
+		this.bianGengQ = bianGengQ;
+	}
+	public String getBianGengH() {
+		return bianGengH;
+	}
+	public void setBianGengH(String bianGengH) {
+		this.bianGengH = bianGengH;
+	}
+	public String getDengJiSxr() {
+		return dengJiSxr;
+	}
+	public void setDengJiSxr(String dengJiSxr) {
+		this.dengJiSxr = dengJiSxr;
+	}
+	public String getHeTongBah() {
+		return heTongBah;
+	}
+	public void setHeTongBah(String heTongBah) {
+		this.heTongBah = heTongBah;
+	}
+	public String getRangYuR() {
+		return rangYuR;
+	}
+	public void setRangYuR(String rangYuR) {
+		this.rangYuR = rangYuR;
+	}
+	public String getShouRangR() {
+		return shouRangR;
+	}
+	public void setShouRangR(String shouRangR) {
+		this.shouRangR = shouRangR;
+	}
+	public String getZhuanLiMc() {
+		return zhuanLiMc;
+	}
+	public void setZhuanLiMc(String zhuanLiMc) {
+		this.zhuanLiMc = zhuanLiMc;
+	}
+	public String getXuKeZl() {
+		return xuKeZl;
+	}
+	public void setXuKeZl(String xuKeZl) {
+		this.xuKeZl = xuKeZl;
+	}
+	public String getBeiAnRq() {
+		return beiAnRq;
+	}
+	public void setBeiAnRq(String beiAnRq) {
+		this.beiAnRq = beiAnRq;
+	}
+	public String getBianGengR() {
+		return bianGengR;
+	}
+	public void setBianGengR(String bianGengR) {
+		this.bianGengR = bianGengR;
+	}
+	public String getJieChuR() {
+		return jieChuR;
+	}
+	public void setJieChuR(String jieChuR) {
+		this.jieChuR = jieChuR;
+	}
+	public String getDengJiH() {
+		return dengJiH;
+	}
+	public void setDengJiH(String dengJiH) {
+		this.dengJiH = dengJiH;
+	}
+	public String getChuZhiR() {
+		return chuZhiR;
+	}
+	public void setChuZhiR(String chuZhiR) {
+		this.chuZhiR = chuZhiR;
+	}
+	public String getZhiQuanR() {
+		return zhiQuanR;
+	}
+	public void setZhiQuanR(String zhiQuanR) {
+		this.zhiQuanR = zhiQuanR;
+	}
+	public String getShouJianR() {
+		return shouJianR;
+	}
+	public void setShouJianR(String shouJianR) {
+		this.shouJianR = shouJianR;
+	}
+	public String getWenJianMc() {
+		return wenJianMc;
+	}
+	public void setWenJianMc(String wenJianMc) {
+		this.wenJianMc = wenJianMc;
+	}
+	public Date getImportData() {
+		return ImportData;
+	}
+	public void setImportData(Date importData) {
+		ImportData = importData;
+	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+	 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		CnLegalStatus other = (CnLegalStatus) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
+	@Override
+	public String toString() {
+		return "CnLegalStatus [ImportData=" + ImportData + ", beiAnRq="
+				+ beiAnRq + ", bianGengH=" + bianGengH + ", bianGengQ="
+				+ bianGengQ + ", bianGengR=" + bianGengR + ", bianGengSx="
+				+ bianGengSx + ", bianGengSxCode=" + bianGengSxCode
+				+ ", chuZhiR=" + chuZhiR + ", dengJiH=" + dengJiH
+				+ ", dengJiSxr=" + dengJiSxr + ", fangQiSxr=" + fangQiSxr
+				+ ", heTongBah=" + heTongBah + ", id=" + id + ", ipc=" + ipc
+				+ ", jieChuR=" + jieChuR + ", juanQi=" + juanQi
+				+ ", legalCode=" + legalCode + ", legalDate=" + legalDate
+				+ ", legalStatus=" + legalStatus + ", legalStatusInfo="
+				+ legalStatusInfo + ", num=" + num + ", pag=" + pag
+				+ ", patentType=" + patentType + ", rangYuR=" + rangYuR
+				+ ", shenQingGbr=" + shenQingGbr + ", shenQingH=" + shenQingH
+				+ ", shenQingR=" + shenQingR + ", shouJianR=" + shouJianR
+				+ ", shouRangR=" + shouRangR + ", shouquanGgr=" + shouquanGgr
+				+ ", vol=" + vol + ", wenJianMc=" + wenJianMc
+				+ ", wuXiaoXgjdh=" + wuXiaoXgjdh + ", wuXiaoXgjdr="
+				+ wuXiaoXgjdr + ", xuKeZl=" + xuKeZl + ", yuanGongGr="
+				+ yuanGongGr + ", yuanMingC=" + yuanMingC + ", zhiQuanR="
+				+ zhiQuanR + ", zhongZhiR=" + zhongZhiR + ", zhuanLiMc="
+				+ zhuanLiMc + "]";
+	}
+	 
+	
+
+}

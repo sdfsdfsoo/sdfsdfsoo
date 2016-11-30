@@ -1,0 +1,89 @@
+package patentsearch.web.action.base;
+
+import java.util.List;
+
+import org.apache.struts2.ServletActionContext;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
+
+import patentsearch.bean.base.ClassNavEntity;
+import patentsearch.bean.util.xml.IpcUtil;
+
+/*
+ * 完成Ipc分类导航控制器
+ */
+@Controller
+@Scope("prototype")
+public class IpcAction {
+	private String searchClass;
+	private String type;
+	private String value;
+	private String nodeStr;
+
+	public String getSearchClass() {
+		return searchClass;
+	}
+
+	public void setSearchClass(String searchClass) {
+		this.searchClass = searchClass;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
+	}
+
+	public String getNodeStr() {
+		return nodeStr;
+	}
+
+	public void setNodeStr(String nodeStr) {
+		this.nodeStr = nodeStr;
+	}
+
+	public String classNav() {
+		return "classNav";
+	}
+
+	public String classNavSearch() {
+		System.out.println();
+		List<ClassNavEntity> list = null;
+		if ("ipc".equals(searchClass)) {
+			list = IpcUtil.parseXml(type, value);
+		} else if ("key".equals(searchClass)) {
+			list = IpcUtil.searchXml(type, value);
+		}
+		if(list.size()>0){
+			ServletActionContext.getContext().put("objects", list);
+		}else{
+			return "classNavList3";
+		}
+		if("ADM".equals(type)){  
+			return "classNavList2";
+		}else{
+			return "classNavList";
+		}
+	}
+	public String classNavList() {
+		if (type != null && nodeStr != null) {
+			List<ClassNavEntity> list = IpcUtil.parseXml(type, nodeStr);
+			ServletActionContext.getContext().put("objects", list);
+		}
+		if("ADM".equals(type)){  
+			return "classNavList2";
+		}else{
+			return "classNavList";
+		}
+	}
+}

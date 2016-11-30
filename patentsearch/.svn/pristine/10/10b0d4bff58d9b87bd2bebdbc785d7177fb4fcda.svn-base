@@ -1,0 +1,13 @@
+<%@ page language="java" pageEncoding="UTF-8"%>
+<div class="base copyright">
+	<div style="padding: 5px;">
+		<span>建议使用谷歌浏览器</span><br /> <span>开发公司：<a
+			href="http://http://www.zjcykj.cn/" target="_blank"
+			title="镇江畅远信息科技有限公司">江苏畅远信息科技有限公司</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+			技术支持：<a href="http://http://www.zjcykj.cn/" target="_blank"
+			title="镇江畅远信息科技有限公司">电话：0511-82016169 传真：0511-88892923 邮箱：zjcy_88@163.com</a></span><br />
+			 <span>
+			 地址：镇江市新区丁卯经十五路99号中心研发区C30栋3楼     
+			 </span>
+	</div>
+</div>

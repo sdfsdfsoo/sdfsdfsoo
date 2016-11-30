@@ -1,0 +1,73 @@
+package patentsearch.service.user;
+
+import patentsearch.bean.user.Users;
+import patentsearch.service.base.DAO;
+
+ 
+
+
+public interface UserService extends DAO<Users> {
+	/**
+	 * 查看用户名是否存在
+	 */
+	public boolean checkByUsername(String username);
+	/**
+	 * 根据用户名和密码查找用户
+	 * @param username
+	 * @param password
+	 * @return
+	 */
+	public Users find(String username, String password);
+	/**
+	 * 修改用户密码
+	 * @param username
+	 * @param oldpwd
+	 * @param newpwd
+	 * @return
+	 */
+	public boolean updatePassword(String username, String oldpwd, String newpwd);
+	/**
+	 * 修改用户状态
+	 * @param state 状态
+	 * @param username 用户名
+	 * @return
+	 */
+	public boolean editState(Short state, String username,String suggest);
+	/**
+	 * 查看组织结构代码是否存在
+	 * @param organisationCode
+	 * @return
+	 */
+	public boolean checkByOrganisationCode(String organisationCode);
+	/**
+	 * 查看身份证号是否存在
+	 * @param idNumber
+	 * @return
+	 */
+	public boolean checkByIDNumber(String idNumber);
+	/**
+	 * 修改用户重要信息
+	 * @param user
+	 */
+	public boolean editUserInfo(Users user);
+	/**
+	 * 重置用户密码
+	 * @param username
+	 * @param pwd
+	 * @return
+	 */
+	public boolean setPassword(String username, String pwd);
+	
+	/**
+	 * 检查是否存在公司名，存在则返回用户信息
+	 * @param username
+	 * @param pwd
+	 * @return
+	 */
+	
+	
+	public Users checkCompany(String companyName);
+	
+	 
+	
+}

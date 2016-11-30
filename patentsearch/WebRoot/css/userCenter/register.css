@@ -1,0 +1,45 @@
+.registerContent{
+	width: 900px;
+ /* height: 500px;  */
+overflow: auto;
+margin: 0px auto 0px auto;
+border-width: 1px;
+border-color: #7BBEE7;
+background-color: white;
+border-style: ridge;
+font-size: 14px;
+line-height: 150%;
+}
+dl{
+margin: 20px 0px 0px 10px;
+padding: 0px;
+}
+dl dt{
+margin: 0px 0px 0px 0px;
+padding: 0px;
+text-align: right;
+width: 135px;
+clear: both;
+float: left;
+line-height: 42px;
+color: #6E6E6E;
+font-size: 16px
+}
+dl dd{
+font-size: 16px;
+line-height: 42px;
+padding: 5px 0px;
+float:left;
+}
+.textBox{
+border: 1px solid #C6CBDE;
+width: 400px;
+height: 32px;
+color: #6E6E6E;
+font-size: 14px;
+line-height: 20px;
+padding: 5px;
+}
+.b{
+	padding-bottom: 10px;
+}

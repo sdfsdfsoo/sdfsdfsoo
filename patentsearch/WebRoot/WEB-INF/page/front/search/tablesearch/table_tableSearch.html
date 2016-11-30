@@ -1,0 +1,138 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>专利检索分析系统</title>
+<link href="css/style.css" type="text/css" rel="stylesheet">
+<link href="css/B_SeachPage.css" rel="stylesheet" type="text/css" />
+<link href="css/B_cprs2010.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="css/jquery-ui.css" />
+<link rel="stylesheet" type="text/css" href="css/ui-dialog.css" />
+<link rel="stylesheet" type="text/css" href="css/tableNew.css" />
+<script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
+<script>
+$(function(){
+  $("#hide").click(function(){
+  $("#handle_show").hide();
+  $("#handle_hid").show();
+  });
+  $("#show").click(function(){
+  $("#handle_show").show();
+  $("#handle_hid").hide();
+  });
+  $('#tw').click(function(){
+		$(this).parent().addClass('zsfs').siblings().removeClass('zsfs');
+	    $("#lb_show").hide();
+        $("#tw_show").show();	
+	  });
+  $('#lb').click(function(){
+		$(this).parent().addClass('zsfs').siblings().removeClass('zsfs');
+	    $("#tw_show").hide();
+        $("#lb_show").show();	
+	  });
+});
+</script>
+</head>
+<body>
+<div class="head">
+   <ul>
+      <span>江苏畅远信息科技有限公司&nbsp;&nbsp;<a href="#">用户中心</a>&nbsp;<a href="#">企业个性库</a>&nbsp;<a href="#">操作手册</a>&nbsp;<a href="#">退出登录</a></span>
+      <img src="img/title.png">
+   </ul>
+</div>
+<div class="shadow"></div>
+<div class="menu">
+   <ul>
+      <li id="separate"><span id="menu1"></span><a href="#">一般检索</a></li>
+      <li id="separate"><span id="menu2"></span><a href="#">高级检索</a></li>
+      <li id="separate"><span id="menu3"></span><a href="#">算式检索</a></li>
+      <li id="separate"><span id="menu4"></span><a href="#">分类检索</a></li>
+      <li id="separate"><span id="menu5"></span><a href="#">中国法律状态检索</a></li>
+      <li><span id="menu6"></span><a href="#">历史记录</a></li>
+   </ul>
+</div>
+<div class="screen">
+    <dL>
+      <dt>筛选：</dt>
+      <dd><a href="#">发明</a></dd>
+    </dL>
+    <ul>
+       <li><span>专利类型：</span><a href="#">发明</a>&nbsp;&nbsp;<a href="#">实用新型</a>&nbsp;&nbsp;<a href="#">外观</a></li>
+      <li><span>专利类型（小类）：</span><a href="#">PCT</a></li>
+       <li><span>法律状态：</span><a href="#">审中</a>&nbsp;&nbsp;<a href="#">有效</a>&nbsp;&nbsp;<a href="#">失效</a></li>
+      <li><span>IPC分类号：</span><a href="#">A类</a>&nbsp;&nbsp;<a href="#">B类</a>&nbsp;&nbsp;<a href="#">C类</a>&nbsp;&nbsp;<a href="#">D类</a>&nbsp;&nbsp;<a href="#">E类</a>&nbsp;&nbsp;<a href="#">F类</a>&nbsp;&nbsp;<a href="#">G类</a>&nbsp;&nbsp;<a href="#">H类</a></li>
+    </ul>
+</div>
+<div class="result">
+   <div class="result_title">
+      <ul>
+         <li><input type="checkbox">全选</li>
+         <li><a href="javascript:;" id="tw"><img src="img/show1.png">图文</a></li>
+         <li class="zsfs"><a href="javascript:;" id="lb"><img src="img/show2.png">列表</a></li>
+         <span>显示21到30,共197816记录</span>
+      </ul>
+  </div>
+  <div class="handle">
+     <ul id="handle_show">
+       <li><a href="javascript:;" id="hide"><img src="img/hid.png"></a></li>
+       <li><img src="img/handle1.png"></li>
+       <li><img src="img/handle2.png"></li>
+       <li><img src="img/handle3.png"></li>
+       <li><img src="img/handle4.png"></li>
+       <li><img src="img/handle5.png"></li>
+     </ul>
+    <ul id="handle_hid">
+       <li><a href="javascript:;" id="show"><img src="img/show.png"></a></li>
+     </ul>
+  </div>
+  <script>
+	var lanren = {
+		navFast:function(){
+			var defaultTop = (window.screen.height - $('.handle').height())/2 - 100; //默认顶部保持上下居中，再往上去100像素
+			$(window).scroll(function(){
+				var offsetTop = defaultTop + $(window).scrollTop()+'px';
+				$('.handle').animate({top:offsetTop},
+				{	duration: 600,	//滑动速度
+     				queue: false    //此动画将不进入动画队列
+     			});						  
+			});
+		}
+	};
+	lanren.navFast();
+</script>
+  <div class="teletextzs" id="tw_show">
+     <div class="patent_img"><img src="img/201520777977.png"></div>
+     <div class="patent_info">
+        <h1>
+        <input type="checkbox">
+[实用新型]&nbsp; <span><a href="#">一种新型全方位计算机散热风扇</a></span> &nbsp;&nbsp; <font class="yxzl">有效专利</font></h1>
+        <h2>申请号：<a href="#">201520777977.4</a>&nbsp;&nbsp;申请日：<a href="#">2015.10.09&nbsp;</a>&nbsp;公开号：<a href="#">无</a>&nbsp;&nbsp;公开日：<a href="#">无</a><br>公告号：<a href="#">204945934U</a>&nbsp;&nbsp;公告日：<a href="#">2016.01.06</a>&nbsp;&nbsp;IPC主分类：<a href="#">G06F 1/20(2006.01)</a><br>申请人：<a href="#">哈尔滨师范大学</a>&nbsp;&nbsp;发明人：<a href="#">于延</a></h2>
+        <h3>摘要：一种新型全方位计算机散热风扇，属于计算机硬件技术领域。它提供一种能够对计算机进行全方位散热并且能够根据温度感应控制散热风扇开启和关闭的新型全方位计算机散热风扇。两个中间侧板水平且上下并列设置，两个中间侧板的左侧面均与竖直设置的左侧板固定连接，两个中间侧板的右侧面与竖直设置的右侧板固定连接，十字型支架位于两个中间侧板的后端，十字型支架与两个中间侧板的后侧面固定……</h3>
+     </div>
+  </div>
+  <div class="listzs" id="lb_show">
+       <ul>
+        <li style="width:30px;"></li>
+        <li style="width:400px;">专利名称</li>
+        <li style="width:150px;">申请号</li>
+        <li style="width:100px;">申请日</li>
+        <li style="width:88px;">状态</li>
+        <li style="width:150px;">主分类号</li>
+     </ul> 
+     <div class="listtab"> 
+       <ul>
+        <li style="width:30px;"><input type="checkbox"></li>
+        <li style="width:400px;">一种新型全方位计算机散热风扇(实用新型)</li>
+        <li style="width:150px;">201520777977.4</li>
+        <li style="width:100px;">2015.10.09</li>
+        <li style="width:88px;">授权</li>
+        <li style="width:150px;">G06F 1/20(2006.01)</li>
+     </ul>
+     </div>
+  </div>
+</div>
+<div class="foot">建议使用谷歌浏览器<br>
+开发公司：江苏畅远信息科技有限公司  |   技术支持：电话：0511-82016169 传真：0511-88892923 邮箱：zjcy_88@163.com<br>
+地址：镇江市新区丁卯经十五路99号中心研发区C30栋3楼</div>
+</body>
+</html>

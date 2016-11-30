@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+    
+
+<struts>
+	<!-- 默认的视图主题 -->
+    <constant name="struts.ui.theme" value="simple" />
+	<!-- 将struts2交给spring来管理 -->
+	 <constant name="struts.objectFactory" value="spring" />
+	 <!-- 调整Struts2最大上传文件限制 -->
+	 <constant name="struts.multipart.maxSize" value="4097152"/>
+	 <!-- 公用包 -->
+	 <package name="base" extends="struts-default">
+	  <global-results>
+	             <result name="message">/WEB-INF/page/share/message.jsp</result>
+	             <result name="loading">/WEB-INF/page/share/loading.jsp</result>
+	  </global-results>
+	 </package>
+	 <!-- 系统初始化 
+	 <package name="system" namespace="/system" extends="base">
+	     <action name="*" class="systemInitAction" method="{1}">
+	     </action>
+	 </package>-->
+     
+	   <!-- 用户证件
+	 <package name="attachment" namespace="/user/front/attachment" extends="base">
+	     <action name="*" class="attachmentAction" method="{1}">
+	     	<result name="upload">/WEB-INF/page/user/attachment/upload.jsp</result>
+	     	<result name="message1">/WEB-INF/page/user/admin/patent/message.jsp</result>
+	     </action>
+	 </package> -->
+	<!-- 用户后台控制界面
+	 <package name="usercontrol" namespace="/user/admin" extends="struts-default">
+	      
+	       <action name="index">
+	             <result>/WEB-INF/page/user/admin/index.jsp</result>
+	       </action>
+	       <action name="left">
+	             <result>/WEB-INF/page/user/admin/left.jsp</result>
+	       </action>
+	       <action name="main">
+	             <result>/WEB-INF/page/user/admin/main.jsp</result>
+	       </action>
+	 </package> -->
+	 <!-- 用户信息维护
+	 <package name="usermanage" namespace="/user/admin/manage" extends="base">
+	      <action name="*" class="userManager" method="{1}">
+	     	<result name="edit">/WEB-INF/page/user/admin/manage/edit.jsp</result>
+	     	<result name="editPwd">/WEB-INF/page/user/admin/manage/editPwd.jsp</result>
+	     </action>
+	 </package> -->
+	 <!-- 专利资助
+	 <package name="userpatent" namespace="/user/admin/patent" extends="base">
+	      <action name="*" class="subsidizeAction" method="{1}">
+	     	<result name="patentlist">/WEB-INF/page/user/admin/patent/patentlist.jsp</result>
+	     </action>
+	 </package>
+	  -->
+	  
+	   <!-- 后台管理员用户 
+	 <package name="master" namespace="/master" extends="base">
+	      <action name="*" class="masterAction" method="{1}">
+	     	<result name="login">/WEB-INF/page/master/login.jsp</result>
+	     	<result name="loginSucceed">/WEB-INF/page/control/index.jsp</result>
+	     	
+	     	
+	     </action>
+	 </package>
+	 -->
+	 <!-- 管理员后台控制界面
+	 <package name="mastercontrol" namespace="/control" extends="struts-default">
+	       <action name="index">
+	             <result>/WEB-INF/page/control/index.jsp</result>
+	       </action>
+	       <action name="left">
+	             <result>/WEB-INF/page/control/left.jsp</result>
+	       </action>
+	       <action name="main">
+	             <result>/WEB-INF/page/control/main.jsp</result>
+	       </action>
+	 </package> -->
+	 
+	 <!-- excel导入导出 
+	 <package name="exceltomysqlcontrol" namespace="/control/excel" extends="base">
+	      <action name="*" class="excelAction" method="{1}">
+	     	<result name="uploadUI">/WEB-INF/page/control/patentsource/selectfile.jsp</result>
+	     	<result name="patentType2_h_schUI">/WEB-INF/page/control/patentsource/patentType2_h_schUI.jsp</result>
+	     </action>
+	 </package>-->
+	  <!-- 专利数据源信息
+	 <package name="patentsource" namespace="/control/patentsource" extends="base">
+	      <action name="*" class="patentSourceAction" method="{1}">
+	     	<result name="selectpatentsource">/WEB-INF/page/control/patentsource/selectPatentSource.jsp</result>
+	     	<result name="patentsourcelist">/WEB-INF/page/control/patentsource/patentsourcelist.jsp</result>
+	     </action>
+	 </package>-->
+	  <!-- 后台管理前台用户 
+	 <package name="frontusercontrol" namespace="/control/user" extends="base">
+	      <action name="*" class="userManageAction" method="{1}">
+	     	<result name="list">/WEB-INF/page/control/user/list.jsp</result>
+	     	<result name="setpassword">/WEB-INF/page/control/user/setpassword.jsp</result>
+	        <result name="editStateToList" type="redirect">/control/user/list?page=${page}</result>
+	     	<result name="userdetail">/WEB-INF/page/control/user/detail.jsp</result>
+	     	<result name="deleteAttachToDetail" type="redirect">/control/user/detail?user.username=${user.username}</result>
+	     </action>
+	 </package>-->
+	 <!-- 后台用户管理
+	 <package name="mastermanager" namespace="/control/master" extends="base">
+	      <action name="*" class="masterManagerAction" method="{1}">
+	     	<result name="list">/WEB-INF/page/control/master/list.jsp</result>
+	     	<result name="editpwd">/WEB-INF/page/control/master/editPwd.jsp</result>
+	     	<result name="add">/WEB-INF/page/control/master/add.jsp</result>
+	     	<result name="privilegeSet">/WEB-INF/page/privilege/privilegeSet.jsp</result>
+	     	
+	     </action>
+	 </package> -->
+	 <!-- 系统权限权管理
+	 <package name="privilegeGroupControl" namespace="/control/privilegeGroup" extends="base">
+	      <action name="*" class="privilegeGroupAction" method="{1}">
+	     	<result name="list">/WEB-INF/page/privilege/privilegegrouplist.jsp</result>
+	     	<result name="add">/WEB-INF/page/privilege/addprivilegegroup.jsp</result>
+	     	<result name="edit">/WEB-INF/page/privilege/editprivilegegroup.jsp</result>
+	     	 
+	     </action>
+	 </package> -->
+	 <!-- 前台用户 -->
+	 <package name="user" namespace="/front/user" extends="base">
+	      <action name="user_*" class="userAction" method="{1}">
+	     	<result name="loginUI">/WEB-INF/page/front/user/login.jsp</result>
+	     	<result name="registerUI">/WEB-INF/page/front/user/register.jsp</result>
+	     	<result name="profileUI">/WEB-INF/page/front/user/profile.jsp</result>
+	     </action>
+	      <action name="formula_*" class="searchFormulaAction" method="{1}">
+	     	 <result name="toexcelfile" type="redirect">/upload/excel/${fileSaveName}</result>
+	     </action>
+	      <action name="ipc_*" class="ipcAction" method="{1}">
+	     	 <result name="classNav">/WEB-INF/page/front/ipc/classNav.jsp</result>
+	     	 <result name="classNavList">/WEB-INF/page/front/ipc/classNavList.jsp</result>
+	     	 <result name="classNavList2">/WEB-INF/page/front/ipc/classNavList2.jsp</result>
+	     	 <result name="classNavList3">/WEB-INF/page/front/ipc/classNavList3.jsp</result>
+	     </action>
+	      <action name="analysis_*" class="analysisAction" method="{1}">
+	     	 <result name="analysisUI">/WEB-INF/page/front/analysis/analysisPatent.jsp</result>
+	     	 <result name="analysisUIEN">/WEB-INF/page/front/analysis/analysisPatentEn.jsp</result>
+	     </action>
+	        <action name="category_*" class="categoryManager" method="{1}">
+	     	<result name="profileTab1">/WEB-INF/page/front/user/tab1.jsp</result>
+	     	<result name="profileTab3">/WEB-INF/page/front/user/tab3.jsp</result>
+	     </action>
+	 </package>
+	<!-- 表格检索、智能检索、专家检索 -->
+	 <package name="frontsearch" namespace="/front/search" extends="base">
+	      <action name="table_*" class="tableSearchAction" method="{1}">
+	     	<result name="analysisUI">/WEB-INF/page/console/analysisProfile.jsp</result> 
+	     	<result name="analysisTab1UI">/WEB-INF/page/console/analysisTab1.jsp</result>
+	     	<result name="analysisTab2UI">/WEB-INF/page/console/analysisTab2.jsp</result>
+	     	<result name="analysisTab3UI">/WEB-INF/page/console/analysisTab3.jsp</result>
+	     	<result name="analysisTab4UI">/WEB-INF/page/console/analysisTab4.jsp</result>
+	     	<result name="analysisTab5UI">/WEB-INF/page/console/analysisTab5.jsp</result>
+	     	<result name="analysisTab6UI">/WEB-INF/page/console/analysisTab6.jsp</result>
+	     	
+	     	<result name="tableSearchUI">/WEB-INF/page/front/search/tablesearch/tablesearch.jsp</result> 
+	     	<result name="smartSearchUI">/WEB-INF/page/front/search/smartsearch/smartsearch.jsp</result> 
+	     	<result name="expertSearchUI">/WEB-INF/page/front/search/expertsearch/expertsearch.jsp</result>
+	     	<result name="searchResultUI">/WEB-INF/page/front/search/tablesearch/searchresult.jsp</result>
+	     	<result name="pdfShowDiv">/WEB-INF/page/front/search/tablesearch/pdfShowDiv.jsp</result>
+	     	
+	     	<result name="patentDetailUI">/WEB-INF/page/front/search/tablesearch/patentdetail.jsp</result>
+	     	<result name="detailOutLookUI">/WEB-INF/page/front/search/tablesearch/outLook.jsp</result>
+	     	<result name="detailTab1UI">/WEB-INF/page/front/search/tablesearch/detailTab1.jsp</result>
+	     	<result name="detailTab1EnUI">/WEB-INF/page/front/search/tablesearch/detailTab1En.jsp</result>
+	     	<result name="detailTab2UI">/WEB-INF/page/front/search/tablesearch/detailTab2.jsp</result>
+	     	<result name="detailTab2EnUI">/WEB-INF/page/front/search/tablesearch/detailTab2En.jsp</result>
+	     	<result name="detailTab3UI">/WEB-INF/page/front/search/tablesearch/detailTab3.jsp</result>
+	     	<result name="detailTab4UI">/WEB-INF/page/front/search/tablesearch/detailTab4.jsp</result>
+	     	<result name="detailTab5UI">/WEB-INF/page/front/search/tablesearch/detailTab5.jsp</result>
+	     	<result name="toexcelfile" type="redirect">/upload/excel/${fileSaveName}</result>
+	     	<result name="topdfzip" type="redirect">/upload/pdf/${fileSaveName}</result>
+	     </action>
+	     <!-- 法律状态检索 -->
+	     <action name="legal_*" class="legalStatusSearchAction" method="{1}">
+	     	<result name="legalStatusSearchUI">/WEB-INF/page/front/search/legalsearch/legalsearch.jsp</result> 
+	     	<result name="searchResultUI">/WEB-INF/page/front/search/legalsearch/searchresult.jsp</result> 
+	     </action>
+	 </package>
+</struts>
